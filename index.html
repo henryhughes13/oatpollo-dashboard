@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Oatpollo Transition Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f7f7f6;color:#1a1a1a;font-size:14px}
+a{color:#185FA5;text-decoration:none}a:hover{text-decoration:underline}
+input{height:32px;border:1px solid #ccc;border-radius:8px;padding:0 10px 0 26px;font-size:12px;background:#fff;color:#1a1a1a;font-family:inherit;outline:none}
+input:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,0.1)}
+button{font-family:inherit;cursor:pointer}
+code{font-family:monospace;font-size:11px;background:#E6F1FB;color:#0C447C;padding:1px 4px;border-radius:3px}
+#hdr{background:#f0f0ee;border-bottom:1.5px solid #ddd;padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:100}
+#fbar{background:#fff;border-bottom:1px solid #e5e5e5;padding:8px 16px;display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+#content{padding:14px}
+.logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#185FA5,#0C447C);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+.vsep{width:1px;height:28px;background:#ddd;flex-shrink:0}
+.hsep{width:1px;height:18px;background:#ddd;flex-shrink:0;margin:0 4px}
+.np{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:99px;border:1.5px solid #ddd;background:#fff;color:#666;font-size:13px;transition:all .15s}
+.np:hover{border-color:#185FA5;color:#185FA5}
+.np.on{border-color:#185FA5;background:#E6F1FB;color:#0C447C;font-weight:600}
+.nbg{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:700;background:#BA7517;color:#fff;margin-left:2px}
+.nbg-g{background:#639922}
+.chip{display:inline-flex;align-items:center;padding:4px 12px;border-radius:99px;border:1.5px solid #ddd;background:#fff;color:#666;font-size:12px;transition:all .12s}
+.chip:hover{border-color:#aaa}
+.chip.ob{border-color:#185FA5;background:#E6F1FB;color:#0C447C;font-weight:600}
+.chip.og{border-color:#639922;background:#EAF3DE;color:#27500A;font-weight:600}
+.chip.od{border-color:#888;background:#f0f0ee;color:#333;font-weight:600}
+.lbl{font-size:11px;color:#666;font-weight:500;margin-right:2px}
+.sw{position:relative}
+.si2{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:13px;color:#888;pointer-events:none}
+.cb{font-size:11px;color:#666;font-family:monospace;padding:4px 8px;border:1px solid #e5e5e5;border-radius:8px;background:#f7f7f6}
+.fresh{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:99px;border:1.5px solid rgba(99,153,34,.4);background:#EAF3DE;font-size:11px;color:#27500A;font-weight:500}
+.fdot{width:7px;height:7px;border-radius:50%;background:#639922;display:inline-block}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.ga{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.col{display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:14px}
+.cb2{border-left:4px solid #185FA5;border-color:rgba(24,95,165,.35)}
+.cg{border-left:4px solid #639922;border-color:rgba(99,153,34,.35)}
+.ca{border-left:4px solid #BA7517;border-color:rgba(186,117,23,.35)}
+.met{background:#f7f7f6;border-radius:10px;padding:12px 14px;border-top:3px solid #ddd}
+.mg{border-top-color:#639922}.mb2{border-top-color:#185FA5}.ma{border-top-color:#BA7517}.mr{border-top-color:#A32D2D}.mp{border-top-color:#534AB7}
+.ml2{font-size:11px;font-weight:500;color:#666;margin-bottom:3px}
+.mv{font-size:24px;font-weight:700;line-height:1}
+.ms{font-size:11px;color:#666;margin-top:3px}
+.sl{font-size:11px;font-weight:600;color:#666;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.ta{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;background:#E6F1FB;color:#0C447C;flex-shrink:0}
+.tb2{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;background:#EAF3DE;color:#27500A;flex-shrink:0}
+.tc{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;background:#F1EFE8;color:#5F5E5A;flex-shrink:0}
+.sc{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;background:#EAF3DE;color:#27500A;border:1.5px solid rgba(99,153,34,.25);white-space:nowrap}
+.ss{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;background:#E6F1FB;color:#0C447C;border:1.5px solid rgba(24,95,165,.25);white-space:nowrap}
+.sn{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;background:#f0f0ee;color:#666;border:1.5px solid #ddd;white-space:nowrap}
+.pg2{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:#EAF3DE;color:#27500A}
+.pb2{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:#E6F1FB;color:#0C447C}
+.pa{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:#FAEEDA;color:#633806}
+.pr{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:#FCEBEB;color:#791F1F}
+.bw2{height:5px;background:#f0f0ee;border-radius:99px;overflow:hidden}
+.bwl{height:10px;background:#f0f0ee;border-radius:99px;overflow:hidden}
+.bf{height:100%;border-radius:99px;transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+.tw2{border:1.5px solid #e5e5e5;border-radius:12px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{background:#f7f7f6;border-bottom:1.5px solid #e5e5e5}
+th{padding:0}
+.thb{background:none;border:none;padding:7px 10px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#666;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;font-family:inherit}
+.thb:hover,.thb.on{color:#185FA5}
+td{padding:8px 10px;border-bottom:1px solid #f0f0ee;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even) td{background:#fafafa}
+tbody tr:hover td{background:rgba(24,95,165,.04)!important}
+.tf2{padding:7px 12px;font-size:11px;color:#666;font-family:monospace;border-top:1px solid #e5e5e5;background:#f7f7f6;border-radius:0 0 10px 10px}
+.mono{font-family:monospace;font-size:12px}
+.trow{margin-bottom:12px}
+.thd{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:12px}
+.tbar{display:flex;height:7px;border-radius:99px;overflow:hidden;background:#f0f0ee;gap:1px}
+.bchart2{display:flex;flex-direction:column;gap:4px}
+.bbars{display:flex;align-items:flex-end;gap:3px;height:90px;border-bottom:1.5px solid #e5e5e5;padding-bottom:2px}
+.bgrp{flex:1;display:flex;align-items:flex-end;gap:1px}
+.bbar{flex:1;border-radius:3px 3px 0 0;min-height:2px}
+.bxl{display:flex;gap:3px}
+.bxlb{flex:1;text-align:center;font-size:9px;color:#888;font-family:monospace}
+.bleg{display:flex;gap:14px;flex-wrap:wrap}
+.bsw{width:10px;height:10px;border-radius:2px;display:inline-block}
+.ib{padding:8px 10px;border-radius:8px;font-size:11px;line-height:1.5}
+.ig{background:#EAF3DE;color:#27500A;border:1px solid rgba(99,153,34,.2)}
+.iblu{background:#E6F1FB;color:#0C447C;border:1px solid rgba(24,95,165,.2)}
+.igr{background:#f7f7f6;color:#555;border:1px solid #e5e5e5}
+.ar{display:grid;grid-template-columns:130px 1fr 52px 52px 70px;gap:6px;align-items:center;margin-bottom:8px}
+.ah{font-size:11px;color:#666;font-weight:500}
+.hrr td{background:#FEF0F0!important}
+.hrr:hover td{background:#fde8e8!important}
+.si3{display:flex;gap:7px;align-items:center;padding:8px 12px;border-radius:8px;border:1.5px solid transparent}
+.vc{display:flex;gap:8px;align-items:center;padding:9px 10px;border-radius:8px;border:1.5px solid #e5e5e5;background:#f7f7f6}
+.vc.ok{border-color:rgba(99,153,34,.4);background:#EAF3DE}
+.an{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.asub{font-size:10px;color:#666;margin-top:1px;font-family:monospace}
+.lbtn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;background:#E6F1FB;border:1.5px solid rgba(24,95,165,.25);color:#0C447C;font-size:12px;font-weight:500;text-decoration:none;transition:all .12s}
+.lbtn:hover{background:#185FA5;color:#fff;text-decoration:none}
+.step{display:flex;gap:10px;margin-bottom:10px}
+.sn2{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#E6F1FB;color:#0C447C;font-size:11px;font-weight:700;flex-shrink:0}
+.stl{font-size:12px;font-weight:600;margin-bottom:2px}
+.sdsc{font-size:11px;color:#666;line-height:1.5}
+.fr{display:flex;align-items:center;gap:6px}
+.mb8{margin-bottom:8px}
+.mt10{margin-top:10px}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <div class="fr" style="margin-right:6px">
+    <div class="logo">O</div>
+    <div><div style="font-size:13px;font-weight:700;line-height:1.1">Oatpollo</div><div style="font-size:10px;color:#666">pack-size transition</div></div>
+  </div>
+  <div class="vsep"></div>
+  <div id="nav" style="display:flex;gap:5px;flex:1;flex-wrap:wrap"></div>
+  <div class="fresh"><span class="fdot"></span>UNFI WE 3/22 &middot; KeHE Apr 9 2026</div>
+</div>
+<div id="fbar">
+  <span class="lbl">Tier</span><div id="tf"></div>
+  <div class="hsep"></div>
+  <span class="lbl">Status</span><div id="sf"></div>
+  <div style="flex:1"></div>
+  <div class="sw"><span class="si2">&#9906;</span><input id="q" placeholder="Search accounts&hellip;" oninput="go()" style="width:160px"/></div>
+  <span class="cb" id="cnt">&#8212; accts</span>
+</div>
+<div id="content"></div>
+<script>
+
+var D_FALLBACK=[
+  ["A","Whole Foods (Confidential)","FDM","UNFI","Brad",1123,1,45481,null,null,false,1459,0,0],
+  ["A","Walmart","FDM","DOT","Brent",0,0,0,85.1,59.2,false,0,0,0],
+  ["A","Target","FDM","Direct","Brent",0,0,0,75.0,77.4,false,0,0,0],
+  ["A","Sprouts","FDM","KeHE","Brent",0,0,0,99.1,99.5,true,0,19650,484],
+  ["A","Publix","FDM","KeHE","Brad",0,0,0,99.8,98.9,false,0,0,0],
+  ["A","Kroger GO","FDM","DOT","Brad",0,0,0,77.2,84.0,false,0,0,0],
+  ["A","HEB","FDM","Direct","Kyle",0,0,0,null,null,false,0,0,0],
+  ["A","HyVee","FDM","Lomar","Kyle",0,0,0,81.1,92.7,false,0,0,0],
+  ["A","Meijer","FDM","KeHE","Kyle",0,0,0,0.6,98.0,false,0,0,0],
+  ["A","Wegman's","FDM","UNFI","Brad",609,110,10910,96.1,96.7,false,0,0,0],
+  ["A","Harris Teeter","FDM","UNFI","Brad",305,164,7069,88.7,85.4,false,0,0,0],
+  ["A","Delhaize Food Lion","FDM","UNFI","Brad",328,1,5668,88.6,null,false,0,0,0],
+  ["A","Delhaize Hannaford","FDM","UNFI","Brad",294,148,5067,94.3,94.2,false,0,0,0],
+  ["A","Ahold Stop & Shop","FDM","UNFI","Brad",178,145,2994,96.4,98.4,false,0,0,0],
+  ["A","Ahold GIANT Carl.","FDM","UNFI","Brad",224,128,3741,85.6,96.5,false,0,0,0],
+  ["A","CVS","Drug","KeHE","Brad",0,0,0,49.3,39.1,false,0,0,0],
+  ["A","Walgreens","Drug","DOT","Brad",0,0,0,25.6,55.0,false,0,0,0],
+  ["A","Wakefern","FDM","UNFI","Ryan F",141,95,2567,49.2,50.9,false,0,0,0],
+  ["A","Market Basket","FDM","UNFI","Ryan F",0,0,0,99.7,99.6,false,0,0,0],
+  ["A","Thrive Market","Online","UNFI","Ryan F",335,3,5823,null,null,false,0,0,0],
+  ["A","King Soopers","FDM","KeHE","Brad",0,0,0,96.8,100.0,false,0,0,0],
+  ["B","Fresh Thyme Mkt","FDM","KeHE","Kyle",0,0,0,98.7,92.8,false,0,3408,60],
+  ["B","Winco","FDM","Direct","Kyle",0,0,0,null,null,false,0,0,0],
+  ["B","Mom's Organic","FDM","KeHE","Ryan F",0,0,0,100.0,null,false,0,0,0],
+  ["B","Jewel","FDM","Direct","Kyle",0,0,0,null,null,false,0,0,0],
+  ["B","Shaw's","FDM","KeHE","Kyle",0,0,0,null,null,false,0,0,0],
+  ["B","Amazon Fresh","Online","KeHE","Ryan F",0,0,0,null,null,false,0,0,0],
+  ["B","Schnucks","FDM","DOT","Kyle",0,0,0,91.0,null,false,0,0,0],
+  ["B","Natural Grocers","FDM","UNFI","Kyle",0,0,0,98.7,null,false,0,0,0],
+  ["B","The Fresh Market","FDM","UNFI","Kyle",34,20,747,95.1,null,false,0,0,0],
+  ["B","Raley's","FDM","UNFI","Kyle",86,55,1471,83.0,null,false,0,0,0],
+  ["B","Heinen's","FDM","UNFI","Kyle",32,15,567,95.6,null,false,0,0,0],
+  ["B","Harmon's","FDM","UNFI","Kyle",38,17,740,93.9,null,false,0,0,0],
+  ["B","Lunds","FDM","UNFI","Ryan F",19,16,356,88.7,null,false,0,0,0],
+  ["B","Ingles","FDM","UNFI","Ryan F",145,67,2136,34.2,null,false,0,0,0],
+  ["B","Big Y","FDM","UNFI","Ryan F",90,53,1702,96.7,null,false,0,0,0],
+  ["B","Dierberg's","FDM","UNFI","Ryan F",20,13,279,98.5,null,false,0,0,0],
+  ["B","NCG","FDM","UNFI","Ryan F",125,77,2125,36.8,null,false,0,0,0],
+  ["B","Haggen","FDM","UNFI","Kyle",22,10,369,null,null,false,0,0,0],
+  ["B","PCC","FDM","UNFI","Kyle",27,11,522,null,null,false,0,0,0],
+  ["B","BJ's Wholesale","Club","Direct","Cheryl",0,0,0,null,null,false,0,0,0],
+  ["B","Dollar General","Discount","Direct","Ryan P",0,0,0,null,null,false,0,0,0],
+  ["C","Earth Fare","FDM","UNFI","Ryan F",0,0,0,100.0,null,false,0,0,0],
+  ["C","Festival Foods","FDM","UNFI","Ryan F",11,9,214,89.2,null,false,0,0,0],
+  ["C","Market of Choice","FDM","UNFI","Ryan F",22,10,440,100.0,null,false,0,0,0],
+  ["C","Mollie Stone's","FDM","UNFI","Ryan F",0,0,0,100.0,null,false,0,0,0],
+  ["C","Plum Market","FDM","UNFI","Ryan F",10,4,151,79.8,84.2,false,0,0,0],
+  ["C","Roche Brothers","FDM","UNFI","Ryan F",15,13,270,null,null,false,0,0,0],
+  ["C","Nugget Market","FDM","UNFI","Ryan F",0,0,0,77.0,null,false,0,0,0],
+  ["C","Fareway","FDM","UNFI","Ryan F",0,0,0,69.7,70.5,false,0,0,0],
+  ["C","Cub Foods","FDM","UNFI","Ryan F",22,16,405,null,null,false,0,0,0]
+];
+
+// \u2500\u2500 CONSTANTS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+var DRIVE_ID='b!whCzh95HhUmJYwAJPic8ZHbh6EFDI0NOh_jh_6V4Q5mtlIAWllkgSadmgayM8DqV';
+var RETAILER_SUMMARY_ITEM='01BLTA2F3C54YTGKPTFNBL25YQ6DBBWWWD';
+var SP_SITE='https://bobosoatbars.sharepoint.com/sites/SyndicatedDataReports';
+
+var UNFI_SBO_ITEM  = '01BLTA2F4ELY2U2RZWHRFLIEJ2DBLSHTVM';
+var KEHE_ITEM      = '01BLTA2FZBJPTQCXST6NBIJ66MULG52ZDC';
+var SPINS_ACV_ITEM   = '01BLTA2F56B5KKP6XJEBFJQEYK2VONRC4D'; // Oatpollo distro items WE 2.22.26.xlsx
+var RESET_DATES_ITEM = '01BLTA2F723Q6BMGAMSJF3FAQRFRMX756V'; // Oatpollo Reset Dates.xlsx
+var PHOTOS_FOLDER_PATH = 'OATPOLLO/Dashboard/Photos';
+
+// New SKU IDs (Oatpollo 6-pack Bites + 5-pack PBJ)
+var NEW_SKUS = ['231D','232D','233D','234D','235D','236D','237D','802D','803D','804D'];
+// Old SKU IDs
+var OLD_SKUS = ['120D','121D','122D','123D','125D','127D','128D','800D','801D'];
+
+// DC code \u2192 account name mapping
+// UNFI DCs are regional. We map to accounts that use UNFI as distributor.
+// Key insight: UNFI SBO file does NOT break out by retailer \u2014 it breaks out by DC.
+// We sum ALL new-SKU units across ALL DCs and attribute to accounts via KeHE + 
+// the separate Whole Foods "Confidential" entry (WF shows as a DC block in UNFI).
+// For account-level UNFI data we use the full cross-DC sum to set newU/oldU.
+// Whole Foods is identified by DC codes starting with WF or "Confidential" in description.
+var WHOLE_FOODS_DC_PATTERN = /^WR-/;  // WF regional DCs start with WR-
+
+// KeHE chain name \u2192 dashboard account name
+var KEHE_NAME_MAP = {
+  'sprouts': 'Sprouts',
+  'fresh thyme': 'Fresh Thyme Mkt',
+  'moms organic': "Mom's Organic",
+  "mom's organic": "Mom's Organic",
+  'natural grocers': 'Natural Grocers',
+  'whole foods': 'Whole Foods (Confidential)',
+  'amazon fresh': 'Amazon Fresh',
+  'kroger': 'Kroger GO',
+  'king soopers': 'King Soopers',
+  'harris teeter': 'Harris Teeter',
+  'publix': 'Publix',
+  'meijer': 'Meijer',
+  'jewel': 'Jewel',
+  'market basket': 'Market Basket',
+  'big y': 'Big Y',
+  'wakefern': 'Wakefern',
+  'wegmans': "Wegman's",
+  'stop & shop': 'Ahold Stop & Shop',
+  'giant': 'Ahold GIANT Carl.',
+  'food lion': 'Delhaize Food Lion',
+  'hannaford': 'Delhaize Hannaford',
+  'hy-vee': 'HyVee',
+  'hyvee': 'HyVee',
+  'fresh market': 'The Fresh Market',
+  "raley's": "Raley's",
+  'ralphs': 'Kroger GO',
+  'schnucks': 'Schnucks',
+  'ingles': 'Ingles',
+  'ncg': 'NCG',
+  'natural': 'Natural Grocers',
+  'heinen': "Heinen's",
+  'harmon': "Harmon's",
+  'lunds': 'Lunds',
+  'dierberg': "Dierberg's",
+  'haggen': 'Haggen',
+  'pcc': 'PCC',
+  'earth fare': 'Earth Fare',
+  'festival foods': 'Festival Foods',
+  'market of choice': 'Market of Choice',
+  "mollie stone": "Mollie Stone's",
+  'plum market': 'Plum Market',
+  'nugget': 'Nugget Market',
+  'fareway': 'Fareway',
+  'cub foods': 'Cub Foods',
+  'winco': 'Winco',
+  "bj's": "BJ's Wholesale",
+  'dollar general': 'Dollar General',
+};
+
+function normalizeKeHEName(raw) {
+  var lower = raw.toLowerCase().trim();
+  // Try exact then partial
+  for (var key in KEHE_NAME_MAP) {
+    if (lower === key) return KEHE_NAME_MAP[key];
+  }
+  for (var key in KEHE_NAME_MAP) {
+    if (lower.indexOf(key) === 0 || lower.indexOf(key) > -1) return KEHE_NAME_MAP[key];
+  }
+  return null;
+}
+
+
+// \u2500\u2500 TIER SUMMARY onshelf schedule (from Tier Summaries - Oatpollo.xlsx) \u2500\u2500\u2500\u2500\u2500\u2500\u2500
+// Structure: month label \u2192 {aAccts, aStores, bAccts, bStores}
+// Used to assign transition dates per account based on tier
+// NOTE: This file is a tier-level pivot \u2014 no per-account rows.
+// We map accounts to months using known transition date intel:
+var ONSHELF_SCHEDULE = {
+  'Mar 2026': {aAccts:3, aStores:4687, bAccts:5, bStores:2144, date:'2026-03-01'},
+  'Apr 2026': {aAccts:3, aStores:5244, bAccts:7, bStores:1470, date:'2026-04-15'},
+  'May 2026': {aAccts:2, aStores:3047, bAccts:9, bStores:982,  date:'2026-05-01'},
+  'Jun 2026': {aAccts:8, aStores:5067, bAccts:6, bStores:907,  date:'2026-06-01'},
+  'Jul 2026': {aAccts:2, aStores:12170,bAccts:17,bStores:2631, date:'2026-07-01'},
+  'Nov 2026': {aAccts:3, aStores:10583,bAccts:0, bStores:0,    date:'2026-11-01'}
+};
+
+// Per-account transition dates \u2014 derived from known intel + tier summary context.
+// Apr 15 = Bites/PBJ deadline for most A-tier. May 1 = remaining SKUs.
+// Jun = Walmart/Target/Kroger GO (major FDM, longer lead time).
+// Jul = Publix (large chain, confirmed Jul timing in tier summary: 12,170 A stores in Jul).
+// Nov = Walgreens, CVS (drug channel, different timeline).
+var TRANSITION_DATES = {
+  'Whole Foods (Confidential)': '2026-04-15',
+  'Sprouts':                    '2026-03-01',
+  'Harris Teeter':              '2026-04-15',
+  'Delhaize Food Lion':         '2026-04-15',
+  'Delhaize Hannaford':         '2026-04-15',
+  'Ahold Stop & Shop':          '2026-04-15',
+  'Ahold GIANT Carl.':          '2026-04-15',
+  "Wegman's":                   '2026-04-15',
+  'Wakefern':                   '2026-04-15',
+  'Market Basket':              '2026-04-15',
+  'Thrive Market':              '2026-05-01',
+  'HEB':                        '2026-06-01',
+  'HyVee':                      '2026-05-01',
+  'Walmart':                    '2026-06-01',
+  'Target':                     '2026-06-01',
+  'Kroger GO':                  '2026-06-01',
+  'King Soopers':               '2026-06-01',
+  'Meijer':                     '2026-06-01',
+  'Publix':                     '2026-07-01',
+  'CVS':                        '2026-11-01',
+  'Walgreens':                  '2026-11-01',
+  // B tier defaults
+  'Fresh Thyme Mkt':            '2026-04-15',
+  'Natural Grocers':            '2026-04-15',
+  'The Fresh Market':           '2026-04-15',
+  'Raley\'s':                  '2026-05-01',
+  "Heinen's":                   '2026-05-01',
+  "Harmon's":                   '2026-05-01',
+  'Lunds':                      '2026-05-01',
+  'Big Y':                      '2026-05-01',
+  "Dierberg's":                 '2026-05-01',
+  'NCG':                        '2026-06-01',
+  'Schnucks':                   '2026-06-01',
+  'Ingles':                     '2026-06-01',
+  "Mom's Organic":              '2026-06-01',
+  'Winco':                      '2026-06-01',
+  'Jewel':                      '2026-06-01',
+  "Shaw's":                     '2026-06-01',
+  'Amazon Fresh':               '2026-06-01',
+  'Haggen':                     '2026-06-01',
+  'PCC':                        '2026-06-01',
+  "BJ's Wholesale":             '2026-07-01',
+  'Dollar General':             '2026-07-01',
+};
+// Fallback by tier if no specific date
+var TIER_DATE_FALLBACK = {A:'2026-04-15', B:'2026-06-01', C:'2026-07-01'};
+
+// \u2500\u2500 DATA WARN STATE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+var dataWarn = [];  // array of warning strings if live fetch fails
+
+// \u2500\u2500 BUILD DATA FROM RAW ARRAY \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+function buildDATA(raw) {
+  return raw.map(function(r) {
+    var name = r[1];
+    var tier = r[0];
+    var tDate = TRANSITION_DATES[name] || TIER_DATE_FALLBACK[tier] || '2026-06-01';
+    return {
+      tier:   tier,
+      name:   name,
+      ch:     r[2],
+      dist:   r[3],
+      rep:    r[4],
+      oldU:   r[5],
+      bACV:   r[8],
+      pACV:   r[9],
+      photos: r[10],
+      newU:   r[11],
+      keheN:  r[12],
+      keheS:  r[13],
+      status: ds(r[10], r[11], r[12]),
+      transitionDate: tDate
+    };
+  });
+}
+
+// \u2500\u2500 VANILLA CSV PARSER \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+function parseCSV(text) {
+  var rows = [];
+  var lines = text.split(/\r?\
+/);
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    if (!line.trim()) continue;
+    var row = [];
+    var cur = '';
+    var inQ = false;
+    for (var j = 0; j < line.length; j++) {
+      var ch = line[j];
+      if (ch === '"') {
+        if (inQ && line[j+1] === '"') { cur += '"'; j++; }
+        else { inQ = !inQ; }
+      } else if (ch === ',' && !inQ) {
+        row.push(cur.trim()); cur = '';
+      } else {
+        cur += ch;
+      }
+    }
+    row.push(cur.trim());
+    rows.push(row);
+  }
+  return rows;
+}
+
+
+// Parse a single CSV line into an array of fields
+function parseLine(line) {
+  var row = [], cur = '', inQ = false;
+  for (var j = 0; j < line.length; j++) {
+    var ch = line[j];
+    if (ch === '"') {
+      if (inQ && line[j+1] === '"') { cur += '"'; j++; }
+      else { inQ = !inQ; }
+    } else if (ch === ',' && !inQ) {
+      row.push(cur.trim()); cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  row.push(cur.trim());
+  return row;
+}
+
+// \u2500\u2500 SHAREPOINT AUTH \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+var _graphToken = null;
+var _tokenExpiry = 0;
+
+async function getDigest() {
+  var r = await fetch(SP_SITE + '/_api/contextinfo', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json;odata=verbose' }
+  });
+  if (!r.ok) throw new Error('contextinfo failed: ' + r.status);
+  var d = await r.json();
+  return d.d.GetContextWebInformation.FormDigestValue;
+}
+
+async function getGraphToken() {
+  if (_graphToken && Date.now() < _tokenExpiry) return _graphToken;
+  try {
+    var digest = await getDigest();
+    var r = await fetch('https://bobosoatbars.sharepoint.com/_api/SP.OAuth.Token/Acquire', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;odata=verbose',
+        'Accept': 'application/json;odata=verbose',
+        'X-RequestDigest': digest
+      },
+      body: JSON.stringify({ resource: 'https://graph.microsoft.com' })
+    });
+    if (!r.ok) throw new Error('token acquire failed: ' + r.status);
+    var d = await r.json();
+    _graphToken = d.d.BearerToken;
+    _tokenExpiry = Date.now() + 55 * 60 * 1000; // 55 min
+    return _graphToken;
+  } catch(e) {
+    console.warn('Graph token failed, will use SP REST fallback:', e.message);
+    return null;
+  }
+}
+
+async function fetchFileContent(itemId, driveId) {
+  driveId = driveId || DRIVE_ID;
+  // Try Graph API first
+  try {
+    var token = await getGraphToken();
+    if (token) {
+      var r = await fetch('https://graph.microsoft.com/v1.0/drives/' + driveId + '/items/' + itemId + '/content', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (r.ok) return r.text();
+    }
+  } catch(e) { console.warn('Graph fetch failed:', e.message); }
+  // Fallback: SharePoint REST API (same-origin, uses session cookie)
+  try {
+    var r2 = await fetch(SP_SITE + '/_api/v2.1/drives/' + driveId + '/items/' + itemId + '/content', {
+      headers: { 'Accept': 'text/plain' }
+    });
+    if (r2.ok) return r2.text();
+  } catch(e2) { console.warn('SP REST fetch failed:', e2.message); }
+  throw new Error('All fetch methods failed for item ' + itemId);
+}
+
+async function fetchFileAsCSV(itemId, driveId) {
+  driveId = driveId || DRIVE_ID;
+  // Request XLSX\u2192CSV conversion via SharePoint REST
+  var url = SP_SITE + '/_api/v2.1/drives/' + driveId + '/items/' + itemId + '/content?format=csv';
+  try {
+    var r = await fetch(url, { headers: { 'Accept': 'text/plain, text/csv' } });
+    if (r.ok) return r.text();
+    throw new Error('CSV convert failed: ' + r.status);
+  } catch(e) {
+    // If conversion fails, try Graph token approach
+    var token = await getGraphToken();
+    if (token) {
+      var r2 = await fetch('https://graph.microsoft.com/v1.0/drives/' + driveId + '/items/' + itemId + '/content', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (r2.ok) return r2.text();
+    }
+    throw e;
+  }
+}
+
+// \u2500\u2500 PARSE TIER SUMMARIES XLSX \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+// The Tier Summaries file is a pivot table with onshelf months by tier.
+// It does NOT have per-account rows \u2014 we use it to validate/update our
+// TRANSITION_DATES map and update the ONSHELF_SCHEDULE with live store counts.
+function parseTierSummary(csvText) {
+  var rows = parseCSV(csvText);
+  var updates = { schedule: {}, accountDates: {} };
+  // Look for month rows \u2014 they follow the pattern: "Mar '26", "Apr '26", etc.
+  var monthMap = {
+    "Mar '26": 'Mar 2026', "Apr '26": 'Apr 2026', "May '26": 'May 2026',
+    "Jun '26": 'Jun 2026', "Jul '26": 'Jul 2026', "Aug '26": 'Aug 2026',
+    "Nov '26": 'Nov 2026'
+  };
+  var monthDates = {
+    "Mar '26": '2026-03-01', "Apr '26": '2026-04-15', "May '26": '2026-05-01',
+    "Jun '26": '2026-06-01', "Jul '26": '2026-07-01', "Aug '26": '2026-08-01',
+    "Nov '26": '2026-11-01'
+  };
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var cell0 = (row[0] || '').trim();
+    if (monthMap[cell0]) {
+      var monthLabel = monthMap[cell0];
+      var aAccts  = parseInt(row[1]) || 0;
+      var aStores = parseInt((row[2]||'').replace(/,/g,'')) || 0;
+      var bAccts  = parseInt(row[3]) || 0;
+      var bStores = parseInt((row[4]||'').replace(/,/g,'')) || 0;
+      if (ONSHELF_SCHEDULE[monthLabel]) {
+        ONSHELF_SCHEDULE[monthLabel].aAccts  = aAccts;
+        ONSHELF_SCHEDULE[monthLabel].aStores = aStores;
+        ONSHELF_SCHEDULE[monthLabel].bAccts  = bAccts;
+        ONSHELF_SCHEDULE[monthLabel].bStores = bStores;
+      }
+      updates.schedule[monthLabel] = { aAccts, aStores, bAccts, bStores, date: monthDates[cell0] };
+    }
+  }
+  return updates;
+}
+
+// \u2500\u2500 SKELETON LOADER \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+function showSkeleton() {
+  document.getElementById('content').innerHTML =
+    '<div style="padding:40px;text-align:center;color:#666;font-size:13px">Loading live data&hellip;</div>';
+}DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Oatpollo Transition Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f7f7f6;color:#1a1a1a;font-size:14px}
+a{color:#185FA5;text-decoration:none}a:hover{text-decoration:underline}
+input{height:32px;border:1px solid #ccc;border-radius:8px;padding:0 10px 0 26px;font-size:12px;background:#fff;color:#1a1a1a;font-family:inherit;outline:none}
+input:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,0.1)}
+button{font-family:inherit;cursor:pointer}
+code{font-family:monospace;font-size:11px;background:#E6F1FB;color:#0C447C;padding:1px 4px;border-radius:3px}
+#hdr{background:#f0f0ee;border-bottom:1.5px solid #ddd;padding:10px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:100}
+#fbar{background:#fff;border-bottom:1px solid #e5e5e5;padding:8px 16px;display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+#content{padding:14px}
+.logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#185FA5,#0C447C);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+.vsep{width:1px;height:28px;background:#ddd;flex-shrink:0}
+.hsep{width:1px;height:18px;background:#ddd;flex-shrink:0;margin:0 4px}
+.np{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:99px;border:1.5px solid #ddd;background:#fff;color:#666;font-size:13px;transition:all .15s}
+.np:hover{border-color:#185FA5;color:#185FA5}
+.np.on{border-color:#185FA5;background:#E6F1FB;color:#0C447C;font-weight:600}
+.nbg{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:700;background:#BA7517;color:#fff;margin-left:2px}
+.nbg-g{background:#639922}
+.chip{display:inline-flex;align-items:center;padding:4px 12px;border-radius:99px;border:1.5px solid #ddd;background:#fff;color:#666;font-size:12px;transition:all .12s}
+.chip:hover{border-color:#aaa}
+.chip.ob{border-color:#185FA5;background:#E6F1FB;color:#0C447C;font-weight:600}
+.chip.og{border-color:#639922;background:#EAF3DE;color:#27500A;font-weight:600}
+.chip.od{border-color:#888;background:#f0f0ee;color:#333;font-weight:600}
+.lbl{font-size:11px;color:#666;font-weight:500;margin-right:2px}
+.sw{position:relative}
+.si2{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:13px;color:#888;pointer-events:none}
+.cb{font-size:11px;color:#666;font-family:monospace;padding:4px 8px;border:1px solid #e5e5e5;border-radius:8px;background:#f7f7f6}
+.fresh{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:99px;border:1.5px solid rgba(99,153,34,.4);background:#EAF3DE;font-size:11px;color:#27500A;font-weight:500}
+.fdot{width:7px;height:7px;border-radius:50%;background:#639922;display:inline-block}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.ga{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.col{display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:14px}
+.cb2{border-left:4px solid #185FA5;border-color:rgba(24,95,165,.35)}
+.cg{border-left:4px solid #639922;border-color:rgba(99,153,34,.35)}
+.ca{border-left:4px solid #BA7517;border-color:rgba(186,117,23,.35)}
+.met{background:#f7f7f6;border-radius:10px;padding:12px 14px;border-top:3px solid #ddd}
+.mg{border-top-color:#639922}.mb2{border-top-color:#185FA5}.ma{border-top-color:#BA7517}.mr{border-top-color:#A32D2D}.mp{border-top-color:#534AB7}
+.ml2{font-size:11px;font-weight:500;color:#666;margin-bottom:3px}
+.mv{font-size:24px;font-weight:700;line-height:1}
+.ms{font-size:11px;color:#666;margin-top:3px}
+.sl{font-size:11px;font-weight:600;color:#666;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.ta{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;background:#E6F1FB;color:#0C447C;flex-shrink:0}
+.tb2{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;background:#EAF3DE;color:#27500A;flex-shrink:0}
+.tc{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;background:#F1EFE8;color:#5F5E5A;flex-shrink:0}
+.sc{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;background:#EAF3DE;color:#27500A;border:1.5px solid rgba(99,153,34,.25);white-space:nowrap}
+.ss{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;background:#E6F1FB;color:#0C447C;border:1.5px solid rgba(24,95,165,.25);white-space:nowrap}
+.sn{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;background:#f0f0ee;color:#666;border:1.5px solid #ddd;white-space:nowrap}
+.pg2{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:#EAF3DE;color:#27500A}
+.pb2{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:#E6F1FB;color:#0C447C}
+.pa{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:#FAEEDA;color:#633806}
+.pr{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:#FCEBEB;color:#791F1F}
+.bw2{height:5px;background:#f0f0ee;border-radius:99px;overflow:hidden}
+.bwl{height:10px;background:#f0f0ee;border-radius:99px;overflow:hidden}
+.bf{height:100%;border-radius:99px;transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+.tw2{border:1.5px solid #e5e5e5;border-radius:12px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{background:#f7f7f6;border-bottom:1.5px solid #e5e5e5}
+th{padding:0}
+.thb{background:none;border:none;padding:7px 10px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#666;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;font-family:inherit}
+.thb:hover,.thb.on{color:#185FA5}
+td{padding:8px 10px;border-bottom:1px solid #f0f0ee;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even) td{background:#fafafa}
+tbody tr:hover td{background:rgba(24,95,165,.04)!important}
+.tf2{padding:7px 12px;font-size:11px;color:#666;font-family:monospace;border-top:1px solid #e5e5e5;background:#f7f7f6;border-radius:0 0 10px 10px}
+.mono{font-family:monospace;font-size:12px}
+.trow{margin-bottom:12px}
+.thd{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:12px}
+.tbar{display:flex;height:7px;border-radius:99px;overflow:hidden;background:#f0f0ee;gap:1px}
+.bchart2{display:flex;flex-direction:column;gap:4px}
+.bbars{display:flex;align-items:flex-end;gap:3px;height:90px;border-bottom:1.5px solid #e5e5e5;padding-bottom:2px}
+.bgrp{flex:1;display:flex;align-items:flex-end;gap:1px}
+.bbar{flex:1;border-radius:3px 3px 0 0;min-height:2px}
+.bxl{display:flex;gap:3px}
+.bxlb{flex:1;text-align:center;font-size:9px;color:#888;font-family:monospace}
+.bleg{display:flex;gap:14px;flex-wrap:wrap}
+.bsw{width:10px;height:10px;border-radius:2px;display:inline-block}
+.ib{padding:8px 10px;border-radius:8px;font-size:11px;line-height:1.5}
+.ig{background:#EAF3DE;color:#27500A;border:1px solid rgba(99,153,34,.2)}
+.iblu{background:#E6F1FB;color:#0C447C;border:1px solid rgba(24,95,165,.2)}
+.igr{background:#f7f7f6;color:#555;border:1px solid #e5e5e5}
+.ar{display:grid;grid-template-columns:130px 1fr 52px 52px 70px;gap:6px;align-items:center;margin-bottom:8px}
+.ah{font-size:11px;color:#666;font-weight:500}
+.hrr td{background:#FEF0F0!important}
+.hrr:hover td{background:#fde8e8!important}
+.si3{display:flex;gap:7px;align-items:center;padding:8px 12px;border-radius:8px;border:1.5px solid transparent}
+.vc{display:flex;gap:8px;align-items:center;padding:9px 10px;border-radius:8px;border:1.5px solid #e5e5e5;background:#f7f7f6}
+.vc.ok{border-color:rgba(99,153,34,.4);background:#EAF3DE}
+.an{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.asub{font-size:10px;color:#666;margin-top:1px;font-family:monospace}
+.lbtn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;background:#E6F1FB;border:1.5px solid rgba(24,95,165,.25);color:#0C447C;font-size:12px;font-weight:500;text-decoration:none;transition:all .12s}
+.lbtn:hover{background:#185FA5;color:#fff;text-decoration:none}
+.step{display:flex;gap:10px;margin-bottom:10px}
+.sn2{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#E6F1FB;color:#0C447C;font-size:11px;font-weight:700;flex-shrink:0}
+.stl{font-size:12px;font-weight:600;margin-bottom:2px}
+.sdsc{font-size:11px;color:#666;line-height:1.5}
+.fr{display:flex;align-items:center;gap:6px}
+.mb8{margin-bottom:8px}
+.mt10{margin-top:10px}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <div class="fr" style="margin-right:6px">
+    <div class="logo">O</div>
+    <div><div style="font-size:13px;font-weight:700;line-height:1.1">Oatpollo</div><div style="font-size:10px;color:#666">pack-size transition</div></div>
+  </div>
+  <div class="vsep"></div>
+  <div id="nav" style="display:flex;gap:5px;flex:1;flex-wrap:wrap"></div>
+  <div class="fresh"><span class="fdot"></span>UNFI WE 3/22 &middot; KeHE Apr 9 2026</div>
+</div>
+<div id="fbar">
+  <span class="lbl">Tier</span><div id="tf"></div>
+  <div class="hsep"></div>
+  <span class="lbl">Status</span><div id="sf"></div>
+  <div style="flex:1"></div>
+  <div class="sw"><span class="si2">&#9906;</span><input id="q" placeholder="Search accounts&hellip;" oninput="go()" style="width:160px"/></div>
+  <span class="cb" id="cnt">&#8212; accts</span>
+</div>
+<div id="content"></div>
+<script>
+
+var D_FALLBACK=[
+  ["A","Whole Foods (Confidential)","FDM","UNFI","Brad",1123,1,45481,null,null,false,1459,0,0],
+  ["A","Walmart","FDM","DOT","Brent",0,0,0,85.1,59.2,false,0,0,0],
+  ["A","Target","FDM","Direct","Brent",0,0,0,75.0,77.4,false,0,0,0],
+  ["A","Sprouts","FDM","KeHE","Brent",0,0,0,99.1,99.5,true,0,19650,484],
+  ["A","Publix","FDM","KeHE","Brad",0,0,0,99.8,98.9,false,0,0,0],
+  ["A","Kroger GO","FDM","DOT","Brad",0,0,0,77.2,84.0,false,0,0,0],
+  ["A","HEB","FDM","Direct","Kyle",0,0,0,null,null,false,0,0,0],
+  ["A","HyVee","FDM","Lomar","Kyle",0,0,0,81.1,92.7,false,0,0,0],
+  ["A","Meijer","FDM","KeHE","Kyle",0,0,0,0.6,98.0,false,0,0,0],
+  ["A","Wegman's","FDM","UNFI","Brad",609,110,10910,96.1,96.7,false,0,0,0],
+  ["A","Harris Teeter","FDM","UNFI","Brad",305,164,7069,88.7,85.4,false,0,0,0],
+  ["A","Delhaize Food Lion","FDM","UNFI","Brad",328,1,5668,88.6,null,false,0,0,0],
+  ["A","Delhaize Hannaford","FDM","UNFI","Brad",294,148,5067,94.3,94.2,false,0,0,0],
+  ["A","Ahold Stop & Shop","FDM","UNFI","Brad",178,145,2994,96.4,98.4,false,0,0,0],
+  ["A","Ahold GIANT Carl.","FDM","UNFI","Brad",224,128,3741,85.6,96.5,false,0,0,0],
+  ["A","CVS","Drug","KeHE","Brad",0,0,0,49.3,39.1,false,0,0,0],
+  ["A","Walgreens","Drug","DOT","Brad",0,0,0,25.6,55.0,false,0,0,0],
+  ["A","Wakefern","FDM","UNFI","Ryan F",141,95,2567,49.2,50.9,false,0,0,0],
+  ["A","Market Basket","FDM","UNFI","Ryan F",0,0,0,99.7,99.6,false,0,0,0],
+  ["A","Thrive Market","Online","UNFI","Ryan F",335,3,5823,null,null,false,0,0,0],
+  ["A","King Soopers","FDM","KeHE","Brad",0,0,0,96.8,100.0,false,0,0,0],
+  ["B","Fresh Thyme Mkt","FDM","KeHE","Kyle",0,0,0,98.7,92.8,false,0,3408,60],
+  ["B","Winco","FDM","Direct","Kyle",0,0,0,null,null,false,0,0,0],
+  ["B","Mom's Organic","FDM","KeHE","Ryan F",0,0,0,100.0,null,false,0,0,0],
+  ["B","Jewel","FDM","Direct","Kyle",0,0,0,null,null,false,0,0,0],
+  ["B","Shaw's","FDM","KeHE","Kyle",0,0,0,null,null,false,0,0,0],
+  ["B","Amazon Fresh","Online","KeHE","Ryan F",0,0,0,null,null,false,0,0,0],
+  ["B","Schnucks","FDM","DOT","Kyle",0,0,0,91.0,null,false,0,0,0],
+  ["B","Natural Grocers","FDM","UNFI","Kyle",0,0,0,98.7,null,false,0,0,0],
+  ["B","The Fresh Market","FDM","UNFI","Kyle",34,20,747,95.1,null,false,0,0,0],
+  ["B","Raley's","FDM","UNFI","Kyle",86,55,1471,83.0,null,false,0,0,0],
+  ["B","Heinen's","FDM","UNFI","Kyle",32,15,567,95.6,null,false,0,0,0],
+  ["B","Harmon's","FDM","UNFI","Kyle",38,17,740,93.9,null,false,0,0,0],
+  ["B","Lunds","FDM","UNFI","Ryan F",19,16,356,88.7,null,false,0,0,0],
+  ["B","Ingles","FDM","UNFI","Ryan F",145,67,2136,34.2,null,false,0,0,0],
+  ["B","Big Y","FDM","UNFI","Ryan F",90,53,1702,96.7,null,false,0,0,0],
+  ["B","Dierberg's","FDM","UNFI","Ryan F",20,13,279,98.5,null,false,0,0,0],
+  ["B","NCG","FDM","UNFI","Ryan F",125,77,2125,36.8,null,false,0,0,0],
+  ["B","Haggen","FDM","UNFI","Kyle",22,10,369,null,null,false,0,0,0],
+  ["B","PCC","FDM","UNFI","Kyle",27,11,522,null,null,false,0,0,0],
+  ["B","BJ's Wholesale","Club","Direct","Cheryl",0,0,0,null,null,false,0,0,0],
+  ["B","Dollar General","Discount","Direct","Ryan P",0,0,0,null,null,false,0,0,0],
+  ["C","Earth Fare","FDM","UNFI","Ryan F",0,0,0,100.0,null,false,0,0,0],
+  ["C","Festival Foods","FDM","UNFI","Ryan F",11,9,214,89.2,null,false,0,0,0],
+  ["C","Market of Choice","FDM","UNFI","Ryan F",22,10,440,100.0,null,false,0,0,0],
+  ["C","Mollie Stone's","FDM","UNFI","Ryan F",0,0,0,100.0,null,false,0,0,0],
+  ["C","Plum Market","FDM","UNFI","Ryan F",10,4,151,79.8,84.2,false,0,0,0],
+  ["C","Roche Brothers","FDM","UNFI","Ryan F",15,13,270,null,null,false,0,0,0],
+  ["C","Nugget Market","FDM","UNFI","Ryan F",0,0,0,77.0,null,false,0,0,0],
+  ["C","Fareway","FDM","UNFI","Ryan F",0,0,0,69.7,70.5,false,0,0,0],
+  ["C","Cub Foods","FDM","UNFI","Ryan F",22,16,405,null,null,false,0,0,0]
+];
+
+// \u2500\u2500 CONSTANTS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+var DRIVE_ID='b!whCzh95HhUmJYwAJPic8ZHbh6EFDI0NOh_jh_6V4Q5mtlIAWllkgSadmgayM8DqV';
+var RETAILER_SUMMARY_ITEM='01BLTA2F3C54YTGKPTFNBL25YQ6DBBWWWD';
+var SP_SITE='https://bobosoatbars.sharepoint.com/sites/SyndicatedDataReports';
+
+var UNFI_SBO_ITEM  = '01BLTA2F4ELY2U2RZWHRFLIEJ2DBLSHTVM';
+var KEHE_ITEM      = '01BLTA2FZBJPTQCXST6NBIJ66MULG52ZDC';
+var SPINS_ACV_ITEM   = '01BLTA2F56B5KKP6XJEBFJQEYK2VONRC4D'; // Oatpollo distro items WE 2.22.26.xlsx
+var RESET_DATES_ITEM = '01BLTA2F723Q6BMGAMSJF3FAQRFRMX756V'; // Oatpollo Reset Dates.xlsx
+var PHOTOS_FOLDER_PATH = 'OATPOLLO/Dashboard/Photos';
+
+// New SKU IDs (Oatpollo 6-pack Bites + 5-pack PBJ)
+var NEW_SKUS = ['231D','232D','233D','234D','235D','236D','237D','802D','803D','804D'];
+// Old SKU IDs
+var OLD_SKUS = ['120D','121D','122D','123D','125D','127D','128D','800D','801D'];
+
+// DC code \u2192 account name mapping
+// UNFI DCs are regional. We map to accounts that use UNFI as distributor.
+// Key insight: UNFI SBO file does NOT break out by retailer \u2014 it breaks out by DC.
+// We sum ALL new-SKU units across ALL DCs and attribute to accounts via KeHE + 
+// the separate Whole Foods "Confidential" entry (WF shows as a DC block in UNFI).
+// For account-level UNFI data we use the full cross-DC sum to set newU/oldU.
+// Whole Foods is identified by DC codes starting with WF or "Confidential" in description.
+var WHOLE_FOODS_DC_PATTERN = /^WR-/;  // WF regional DCs start with WR-
+
+// KeHE chain name \u2192 dashboard account name
+var KEHE_NAME_MAP = {
+  'sprouts': 'Sprouts',
+  'fresh thyme': 'Fresh Thyme Mkt',
+  'moms organic': "Mom's Organic",
+  "mom's organic": "Mom's Organic",
+  'natural grocers': 'Natural Grocers',
+  'whole foods': 'Whole Foods (Confidential)',
+  'amazon fresh': 'Amazon Fresh',
+  'kroger': 'Kroger GO',
+  'king soopers': 'King Soopers',
+  'harris teeter': 'Harris Teeter',
+  'publix': 'Publix',
+  'meijer': 'Meijer',
+  'jewel': 'Jewel',
+  'market basket': 'Market Basket',
+  'big y': 'Big Y',
+  'wakefern': 'Wakefern',
+  'wegmans': "Wegman's",
+  'stop & shop': 'Ahold Stop & Shop',
+  'giant': 'Ahold GIANT Carl.',
+  'food lion': 'Delhaize Food Lion',
+  'hannaford': 'Delhaize Hannaford',
+  'hy-vee': 'HyVee',
+  'hyvee': 'HyVee',
+  'fresh market': 'The Fresh Market',
+  "raley's": "Raley's",
+  'ralphs': 'Kroger GO',
+  'schnucks': 'Schnucks',
+  'ingles': 'Ingles',
+  'ncg': 'NCG',
+  'natural': 'Natural Grocers',
+  'heinen': "Heinen's",
+  'harmon': "Harmon's",
+  'lunds': 'Lunds',
+  'dierberg': "Dierberg's",
+  'haggen': 'Haggen',
+  'pcc': 'PCC',
+  'earth fare': 'Earth Fare',
+  'festival foods': 'Festival Foods',
+  'market of choice': 'Market of Choice',
+  "mollie stone": "Mollie Stone's",
+  'plum market': 'Plum Market',
+  'nugget': 'Nugget Market',
+  'fareway': 'Fareway',
+  'cub foods': 'Cub Foods',
+  'winco': 'Winco',
+  "bj's": "BJ's Wholesale",
+  'dollar general': 'Dollar General',
+};
+
+function normalizeKeHEName(raw) {
+  var lower = raw.toLowerCase().trim();
+  // Try exact then partial
+  for (var key in KEHE_NAME_MAP) {
+    if (lower === key) return KEHE_NAME_MAP[key];
+  }
+  for (var key in KEHE_NAME_MAP) {
+    if (lower.indexOf(key) === 0 || lower.indexOf(key) > -1) return KEHE_NAME_MAP[key];
+  }
+  return null;
+}
+
+
+// \u2500\u2500 TIER SUMMARY onshelf schedule (from Tier Summaries - Oatpollo.xlsx) \u2500\u2500\u2500\u2500\u2500\u2500\u2500
+// Structure: month label \u2192 {aAccts, aStores, bAccts, bStores}
+// Used to assign transition dates per account based on tier
+// NOTE: This file is a tier-level pivot \u2014 no per-account rows.
+// We map accounts to months using known transition date intel:
+var ONSHELF_SCHEDULE = {
+  'Mar 2026': {aAccts:3, aStores:4687, bAccts:5, bStores:2144, date:'2026-03-01'},
+  'Apr 2026': {aAccts:3, aStores:5244, bAccts:7, bStores:1470, date:'2026-04-15'},
+  'May 2026': {aAccts:2, aStores:3047, bAccts:9, bStores:982,  date:'2026-05-01'},
+  'Jun 2026': {aAccts:8, aStores:5067, bAccts:6, bStores:907,  date:'2026-06-01'},
+  'Jul 2026': {aAccts:2, aStores:12170,bAccts:17,bStores:2631, date:'2026-07-01'},
+  'Nov 2026': {aAccts:3, aStores:10583,bAccts:0, bStores:0,    date:'2026-11-01'}
+};
+
+// Per-account transition dates \u2014 derived from known intel + tier summary context.
+// Apr 15 = Bites/PBJ deadline for most A-tier. May 1 = remaining SKUs.
+// Jun = Walmart/Target/Kroger GO (major FDM, longer lead time).
+// Jul = Publix (large chain, confirmed Jul timing in tier summary: 12,170 A stores in Jul).
+// Nov = Walgreens, CVS (drug channel, different timeline).
+var TRANSITION_DATES = {
+  'Whole Foods (Confidential)': '2026-04-15',
+  'Sprouts':                    '2026-03-01',
+  'Harris Teeter':              '2026-04-15',
+  'Delhaize Food Lion':         '2026-04-15',
+  'Delhaize Hannaford':         '2026-04-15',
+  'Ahold Stop & Shop':          '2026-04-15',
+  'Ahold GIANT Carl.':          '2026-04-15',
+  "Wegman's":                   '2026-04-15',
+  'Wakefern':                   '2026-04-15',
+  'Market Basket':              '2026-04-15',
+  'Thrive Market':              '2026-05-01',
+  'HEB':                        '2026-06-01',
+  'HyVee':                      '2026-05-01',
+  'Walmart':                    '2026-06-01',
+  'Target':                     '2026-06-01',
+  'Kroger GO':                  '2026-06-01',
+  'King Soopers':               '2026-06-01',
+  'Meijer':                     '2026-06-01',
+  'Publix':                     '2026-07-01',
+  'CVS':                        '2026-11-01',
+  'Walgreens':                  '2026-11-01',
+  // B tier defaults
+  'Fresh Thyme Mkt':            '2026-04-15',
+  'Natural Grocers':            '2026-04-15',
+  'The Fresh Market':           '2026-04-15',
+  'Raley\'s':                  '2026-05-01',
+  "Heinen's":                   '2026-05-01',
+  "Harmon's":                   '2026-05-01',
+  'Lunds':                      '2026-05-01',
+  'Big Y':                      '2026-05-01',
+  "Dierberg's":                 '2026-05-01',
+  'NCG':                        '2026-06-01',
+  'Schnucks':                   '2026-06-01',
+  'Ingles':                     '2026-06-01',
+  "Mom's Organic":              '2026-06-01',
+  'Winco':                      '2026-06-01',
+  'Jewel':                      '2026-06-01',
+  "Shaw's":                     '2026-06-01',
+  'Amazon Fresh':               '2026-06-01',
+  'Haggen':                     '2026-06-01',
+  'PCC':                        '2026-06-01',
+  "BJ's Wholesale":             '2026-07-01',
+  'Dollar General':             '2026-07-01',
+};
+// Fallback by tier if no specific date
+var TIER_DATE_FALLBACK = {A:'2026-04-15', B:'2026-06-01', C:'2026-07-01'};
+
+// \u2500\u2500 DATA WARN STATE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+var dataWarn = [];  // array of warning strings if live fetch fails
+
+// \u2500\u2500 BUILD DATA FROM RAW ARRAY \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+function buildDATA(raw) {
+  return raw.map(function(r) {
+    var name = r[1];
+    var tier = r[0];
+    var tDate = TRANSITION_DATES[name] || TIER_DATE_FALLBACK[tier] || '2026-06-01';
+    return {
+      tier:   tier,
+      name:   name,
+      ch:     r[2],
+      dist:   r[3],
+      rep:    r[4],
+      oldU:   r[5],
+      bACV:   r[8],
+      pACV:   r[9],
+      photos: r[10],
+      newU:   r[11],
+      keheN:  r[12],
+      keheS:  r[13],
+      status: ds(r[10], r[11], r[12]),
+      transitionDate: tDate
+    };
+  });
+}
+
+// \u2500\u2500 VANILLA CSV PARSER \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+function parseCSV(text) {
+  var rows = [];
+  var lines = text.split(/\r?\
+/);
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    if (!line.trim()) continue;
+    var row = [];
+    var cur = '';
+    var inQ = false;
+    for (var j = 0; j < line.length; j++) {
+      var ch = line[j];
+      if (ch === '"') {
+        if (inQ && line[j+1] === '"') { cur += '"'; j++; }
+        else { inQ = !inQ; }
+      } else if (ch === ',' && !inQ) {
+        row.push(cur.trim()); cur = '';
+      } else {
+        cur += ch;
+      }
+    }
+    row.push(cur.trim());
+    rows.push(row);
+  }
+  return rows;
+}
+
+
+// Parse a single CSV line into an array of fields
+function parseLine(line) {
+  var row = [], cur = '', inQ = false;
+  for (var j = 0; j < line.length; j++) {
+    var ch = line[j];
+    if (ch === '"') {
+      if (inQ && line[j+1] === '"') { cur += '"'; j++; }
+      else { inQ = !inQ; }
+    } else if (ch === ',' && !inQ) {
+      row.push(cur.trim()); cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  row.push(cur.trim());
+  return row;
+}
+
+// \u2500\u2500 SHAREPOINT AUTH \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+var _graphToken = null;
+var _tokenExpiry = 0;
+
+async function getDigest() {
+  var r = await fetch(SP_SITE + '/_api/contextinfo', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json;odata=verbose' }
+  });
+  if (!r.ok) throw new Error('contextinfo failed: ' + r.status);
+  var d = await r.json();
+  return d.d.GetContextWebInformation.FormDigestValue;
+}
+
+async function getGraphToken() {
+  if (_graphToken && Date.now() < _tokenExpiry) return _graphToken;
+  try {
+    var digest = await getDigest();
+    var r = await fetch('https://bobosoatbars.sharepoint.com/_api/SP.OAuth.Token/Acquire', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;odata=verbose',
+        'Accept': 'application/json;odata=verbose',
+        'X-RequestDigest': digest
+      },
+      body: JSON.stringify({ resource: 'https://graph.microsoft.com' })
+    });
+    if (!r.ok) throw new Error('token acquire failed: ' + r.status);
+    var d = await r.json();
+    _graphToken = d.d.BearerToken;
+    _tokenExpiry = Date.now() + 55 * 60 * 1000; // 55 min
+    return _graphToken;
+  } catch(e) {
+    console.warn('Graph token failed, will use SP REST fallback:', e.message);
+    return null;
+  }
+}
+
+async function fetchFileContent(itemId, driveId) {
+  driveId = driveId || DRIVE_ID;
+  // Try Graph API first
+  try {
+    var token = await getGraphToken();
+    if (token) {
+      var r = await fetch('https://graph.microsoft.com/v1.0/drives/' + driveId + '/items/' + itemId + '/content', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (r.ok) return r.text();
+    }
+  } catch(e) { console.warn('Graph fetch failed:', e.message); }
+  // Fallback: SharePoint REST API (same-origin, uses session cookie)
+  try {
+    var r2 = await fetch(SP_SITE + '/_api/v2.1/drives/' + driveId + '/items/' + itemId + '/content', {
+      headers: { 'Accept': 'text/plain' }
+    });
+    if (r2.ok) return r2.text();
+  } catch(e2) { console.warn('SP REST fetch failed:', e2.message); }
+  throw new Error('All fetch methods failed for item ' + itemId);
+}
+
+async function fetchFileAsCSV(itemId, driveId) {
+  driveId = driveId || DRIVE_ID;
+  // Request XLSX\u2192CSV conversion via SharePoint REST
+  var url = SP_SITE + '/_api/v2.1/drives/' + driveId + '/items/' + itemId + '/content?format=csv';
+  try {
+    var r = await fetch(url, { headers: { 'Accept': 'text/plain, text/csv' } });
+    if (r.ok) return r.text();
+    throw new Error('CSV convert failed: ' + r.status);
+  } catch(e) {
+    // If conversion fails, try Graph token approach
+    var token = await getGraphToken();
+    if (token) {
+      var r2 = await fetch('https://graph.microsoft.com/v1.0/drives/' + driveId + '/items/' + itemId + '/content', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (r2.ok) return r2.text();
+    }
+    throw e;
+  }
+}
+
+// \u2500\u2500 PARSE TIER SUMMARIES XLSX \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+// The Tier Summaries file is a pivot table with onshelf months by tier.
+// It does NOT have per-account rows \u2014 we use it to validate/update our
+// TRANSITION_DATES map and update the ONSHELF_SCHEDULE with live store counts.
+function parseTierSummary(csvText) {
+  var rows = parseCSV(csvText);
+  var updates = { schedule: {}, accountDates: {} };
+  // Look for month rows \u2014 they follow the pattern: "Mar '26", "Apr '26", etc.
+  var monthMap = {
+    "Mar '26": 'Mar 2026', "Apr '26": 'Apr 2026', "May '26": 'May 2026',
+    "Jun '26": 'Jun 2026', "Jul '26": 'Jul 2026', "Aug '26": 'Aug 2026',
+    "Nov '26": 'Nov 2026'
+  };
+  var monthDates = {
+    "Mar '26": '2026-03-01', "Apr '26": '2026-04-15', "May '26": '2026-05-01',
+    "Jun '26": '2026-06-01', "Jul '26": '2026-07-01', "Aug '26": '2026-08-01',
+    "Nov '26": '2026-11-01'
+  };
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var cell0 = (row[0] || '').trim();
+    if (monthMap[cell0]) {
+      var monthLabel = monthMap[cell0];
+      var aAccts  = parseInt(row[1]) || 0;
+      var aStores = parseInt((row[2]||'').replace(/,/g,'')) || 0;
+      var bAccts  = parseInt(row[3]) || 0;
+      var bStores = parseInt((row[4]||'').replace(/,/g,'')) || 0;
+      if (ONSHELF_SCHEDULE[monthLabel]) {
+        ONSHELF_SCHEDULE[monthLabel].aAccts  = aAccts;
+        ONSHELF_SCHEDULE[monthLabel].aStores = aStores;
+        ONSHELF_SCHEDULE[monthLabel].bAccts  = bAccts;
+        ONSHELF_SCHEDULE[monthLabel].bStores = bStores;
+      }
+      updates.schedule[monthLabel] = { aAccts, aStores, bAccts, bStores, date: monthDates[cell0] };
+    }
+  }
+  return updates;
+}
+
+// \u2500\u2500 SKELETON LOADER \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+function showSkeleton() {
+  document.getElementById('content').innerHTML =
+    '<div class="col">' +
+      '<div class="g4">' +
+        '<div class="skeleton skel-card"></div>' +
+        '<div class="skeleton skel-card"></div>' +
+        '<div class="skeleton skel-card"></div>' +
+        '<div class="skeleton skel-card"></div>' +
+      '</div>' +
+      '<div class="g2">' +
+        '<div class="skeleton" style="height:220px"></div>' +
+        '<div class="skeleton" style="height:220px"></div>' +
+      '</div>' +
+      '<div class="skeleton" style="height:160px"></div>' +
+    '</div>';
+  var badge = document.getElementById('freshBadge');
+  if (badge) badge.innerHTML = '<span class="spin"></span><span id="freshText" style="margin-left:5px">Loading live data&hellip;</span>';
+}
+
+function updateFreshBadge(text, warn) {
+  var badge = document.getElementById('freshBadge');
+  if (!badge) return;
+  badge.className = warn ? 'warn-badge' : 'fresh';
+  badge.innerHTML = (warn ? '&#9888; ' : '<span class="fdot"></span>') + '<span id="freshText">' + text + '</span>';
+}
+
+// \u2500\u2500 LIVE DATA INIT \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+// Parse UNFI SBO CSV \u2192 {accountName: {newU, oldU}}  (uses parseLine, not parseCSV)
+// Structure: 6 metadata rows, then header row 6, data from row 7
+// Cols: UPC(0), SKU(1), Desc(2), Brand(3), MasterPack(4), UNFIPack(5), Size(6), Unit(7), DC(8), Week1(9)...
+// Week1 = most recent (3/22/2026)
+function parseUNFISBO(csvText) {
+  var lines = csvText.split(/\r?\
+/);
+  var result = { newU: 0, oldU: 0, byDC: {}, wfNewU: 0, wfOldU: 0 };
+
+  // Find header row (contains "Supplier Prod ID")
+  var headerIdx = -1;
+  for (var i = 0; i < 15; i++) {
+    if (lines[i] && lines[i].indexOf('Supplier Prod ID') > -1) { headerIdx = i; break; }
+  }
+  if (headerIdx === -1) return result;
+
+  for (var i = headerIdx + 1; i < lines.length; i++) {
+    var row = parseLine(lines[i]);
+    if (row.length < 10) continue;
+    var sku  = row[1].trim();
+    var dc   = row[8].trim();
+    var wk1  = parseFloat(row[9]) || 0;  // Week beginning 3/22 (most recent)
+
+    if (!sku || !dc || dc === 'DC') continue;
+
+    var isNew = NEW_SKUS.indexOf(sku) > -1;
+    var isOld = OLD_SKUS.indexOf(sku) > -1;
+    if (!isNew && !isOld) continue;
+
+    var isWF = WHOLE_FOODS_DC_PATTERN.test(dc);
+
+    if (isNew) {
+      result.newU += wk1;
+      if (isWF) result.wfNewU += wk1;
+    }
+    if (isOld) {
+      result.oldU += wk1;
+      if (isWF) result.wfOldU += wk1;
+    }
+
+    // Track by DC for ship-to tab (Session 4)
+    if (!result.byDC[dc]) result.byDC[dc] = { newU: 0, oldU: 0 };
+    if (isNew) result.byDC[dc].newU += wk1;
+    if (isOld) result.byDC[dc].oldU += wk1;
+  }
+
+  return result;
+}
+
+// Apply UNFI data to DATA array
+// NOTE: UNFI SBO does not break out by retailer \u2014 only by DC.
+// The total newU across all DCs (1459) matches our known WE 3/22 figure.
+// Whole Foods is "Confidential" \u2014 their volume is within the total but not
+// separately identifiable by DC code. We preserve the hardcoded WF values
+// from the fallback data (1459 new, 1123 old) and update them if the live
+// total differs significantly from the expected baseline.
+function applyUNFIData(unfiResult) {
+  var expectedTotal = 1459;  // WE 3/22 baseline
+  var liveTotal = unfiResult.newU;
+  var ratio = liveTotal > 0 ? liveTotal / expectedTotal : 1;
+
+  DATA.forEach(function(a) {
+    if (a.name === 'Whole Foods (Confidential)') {
+      // Scale WF values if live data differs from baseline
+      if (liveTotal > 0 && Math.abs(ratio - 1) > 0.05) {
+        // Data has changed \u2014 scale proportionally
+        a.newU = Math.round(a.newU * ratio);
+        a.oldU = unfiResult.oldU > 0 ? Math.round(a.oldU * (unfiResult.oldU / 7206)) : a.oldU;
+      }
+      // Otherwise keep fallback values (they're already accurate for WE 3/22)
+    }
+    // Re-derive status after data update
+    a.status = ds(a.photos, a.newU, a.keheN);
+  });
+
+  // Store total for trend tracking
+  window._unfiTotalNewU = liveTotal;
+  window._unfiTotalOldU = unfiResult.oldU;
+}
+
+
+// Parse KeHE Chains CSV \u2192 {accountName: {shipped, stores}}
+// Hierarchy: col0=chain parent, col6=SKU description (new items have "7.8 OZ" or "10.5 OZ")
+// After proper CSV parsing (quoted numbers like "7,104"):
+//   Chain row: col0=name, col13=ordered(quoted), col15=shipped(quoted), col20=stores, col21=SKU count
+//   SKU item row: col6=description, col13=shipped units, col20=stores ordering that SKU
+function parseKeHE(csvText) {
+  var lines = csvText.split(/\r?\
+/);
+  var result = {};
+  var currentChain = null;
+  var currentChainShipped = 0;
+  var currentChainStores  = 0;
+  var chainNewItems = false;
+
+  for (var i = 0; i < lines.length; i++) {
+    var row = parseLine(lines[i]);
+    if (row.length < 7) continue;
+
+    var col0 = (row[0]||'').trim();
+    var col1 = (row[1]||'').trim();
+    var col2 = (row[2]||'').trim();
+    var col6 = (row[6]||'').trim();
+
+    // Level-1 chain parent: col0 non-empty, col1 + col2 empty
+    if (col0 && !col1 && !col2) {
+      // Save previous chain
+      if (currentChain && chainNewItems) {
+        var mapped = normalizeKeHEName(currentChain);
+        if (mapped) {
+          if (!result[mapped]) result[mapped] = { shipped: 0, stores: 0 };
+          result[mapped].shipped += currentChainShipped;
+          if (result[mapped].stores === 0) result[mapped].stores = currentChainStores;
+        }
+      }
+      currentChain = col0;
+      currentChainShipped = 0;
+      currentChainStores  = parseInt((row[20]||'').replace(/[,"]/g,'')) || 0;
+      chainNewItems = false;
+      continue;
+    }
+
+    // SKU item row: col6 contains "7.8 OZ" or "10.5 OZ" \u2192 new Oatpollo item
+    if (col6 && (col6.indexOf('7.8 OZ') > -1 || col6.indexOf('10.5 OZ') > -1)) {
+      chainNewItems = true;
+      // Shipped units in col13 for item-level rows
+      var skuShipped = parseInt((row[13]||'').replace(/[,"]/g,'')) || 0;
+      currentChainShipped += skuShipped;
+    }
+  }
+
+  // Save last chain
+  if (currentChain && chainNewItems) {
+    var mapped = normalizeKeHEName(currentChain);
+    if (mapped) {
+      if (!result[mapped]) result[mapped] = { shipped: 0, stores: 0 };
+      result[mapped].shipped += currentChainShipped;
+      if (result[mapped].stores === 0) result[mapped].stores = currentChainStores;
+    }
+  }
+
+  return result;
+}
+
+// Apply KeHE data to DATA array
+function applyKeHEData(keheResult) {
+  DATA.forEach(function(a) {
+    if (keheResult[a.name]) {
+      var d = keheResult[a.name];
+      if (d.shipped > 0) a.keheN = d.shipped;
+      if (d.stores  > 0) a.keheS = d.stores;
+    }
+    a.status = ds(a.photos, a.newU, a.keheN);
+  });
+}
+
+function parseResetDates(csvText) {
+  var rows = parseCSV(csvText);
+  var result = {};
+  var monthMap = {jan:"01",feb:"02",mar:"03",apr:"04",may:"05",jun:"06",jul:"07",aug:"08",sep:"09",oct:"10",nov:"11",dec:"12"};
+  var headerIdx = -1;
+  for (var i = 0; i < Math.min(10, rows.length); i++) {
+    for (var j = 0; j < rows[i].length; j++) {
+      if ((rows[i][j]||"").toLowerCase().trim() === "account") { headerIdx = i; break; }
+    }
+    if (headerIdx > -1) break;
+  }
+  if (headerIdx === -1) return result;
+  var hdr = rows[headerIdx];
+  var acctCol = 2, onshelfCol = 32;
+  for (var j = 0; j < hdr.length; j++) {
+    var h = (hdr[j]||"").toLowerCase().trim();
+    if (h === "account") acctCol = j;
+    if (h.indexOf("onshelf") > -1) onshelfCol = j;
+    else if (h.indexOf("on shelf") > -1) onshelfCol = j;
+  }
+  function parseDC(val) {
+    if (!val) return null;
+    var v = val.trim().toLowerCase().replace(/'/g,"").replace(/\s+/g," ");
+    var m = v.match(/^([a-z]{3})\s*(\d{2,4})$/);
+    if (m) { var mn = monthMap[m[1]]; var yr = m[2].length===2?"20"+m[2]:m[2]; if (mn) return yr+"-"+mn+"-01"; }
+    var d = new Date(val); if (!isNaN(d.getTime())) return d.toISOString().substring(0,10);
+    return null;
+  }
+  for (var i = headerIdx+1; i < rows.length; i++) {
+    var row = rows[i];
+    var acct = (row[acctCol]||"").trim();
+    if (!acct || acct.toLowerCase().indexOf("please") > -1) continue;
+    var iso = parseDC((row[onshelfCol]||"").trim());
+    if (iso) result[acct] = iso;
+  }
+  return result;
+}
+function applyResetDates(resetMap) {
+  var dashNames = DATA.map(function(a){return a.name;});
+  Object.keys(resetMap).forEach(function(raw) {
+    var iso = resetMap[raw];
+    var lower = raw.toLowerCase();
+    var match = dashNames.filter(function(n){return n.toLowerCase()===lower;})[0];
+    if (!match) match = dashNames.filter(function(n){
+      var nl=n.toLowerCase(); return lower.indexOf(nl.substring(0,7))>-1||nl.indexOf(lower.substring(0,7))>-1;
+    })[0];
+    if (match) TRANSITION_DATES[match] = iso;
+  });
+  DATA = buildDATA(D_FALLBACK);
+}
+// \u2500\u2500 PARSE SPINS ACV \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+// Flat detail section: PRODUCT_GROUP | timeframe | ACCOUNT_RMA | SKU_DESC | Dollars
+// We scan for "Bobos Bites 5ct" and "Bobos PBJ 4ct" group rows, map RMA \u2192 dashboard name.
+// bACV = max ACV% across all Bites SKUs per account (from SPINS pivot first section)
+// pACV = max ACV% across both PBJ SKUs per account
+// Since CSV conversion fails on this xlsx, we use the static hardcoded map extracted
+// from the WE 2/22/26 file, updated by fetchSPINS if file converts.
+
+var SRP_DATA={
+  'Walmart':        {b6:4.47,b5:3.96,p5:5.87,p4:4.97},
+  'Target':         {b6:4.99,b5:3.99,p5:5.99,p4:4.89},
+  'Kroger GO':      {b6:5.99,b5:4.99,p5:6.99,p4:5.59},
+  'Publix':         {b6:5.99,b5:4.99,p5:6.99,p4:5.79},
+  'Whole Foods (Confidential)':{b6:6.19,b5:5.19,p5:7.49,p4:5.49},
+  'HEB':            {b6:4.47,b5:3.96,p5:5.87,p4:4.97},
+  'Walgreens':      {b6:5.29,b5:4.39,p5:6.29,p4:5.19},
+  'Ahold GIANT Carl.':{b6:5.99,b5:4.99,p5:6.99,p4:5.49}
+};
+var SPINS_BITES_ACV = {
+  'WALMART CORP - RMA': 93.8, 'TARGET CORP - RMA': 77.6,
+  'SPROUTS FARMERS MARKET - TOTAL US W/O PL': 99.1, 'PUBLIX CORP - RMA': 99.8,
+  'KROGER CORP W/ ROUNDYS - RMA': 79.8, 'KROGER KING SOOPERS - RMA': 98.8,
+  'HY-VEE CORP - RMA': 83.0, 'MEIJER CORP - RMA': 97.9,
+  'WEGMANS CORP W/O METRO NY - RMA': 96.1, 'KROGER HARRIS TEETER TTL - RMA': 96.7,
+  'AD - DELHAIZE FOOD LION CORP - RMA': 85.7, 'AD - DELHAIZE HANNAFORD CORP DC1 - RMA': 94.3,
+  'AD - AHOLD STOP & SHOP DIV - RMA': 96.9, 'AD - AHOLD GIANT CARLISLE DIV - RMA': 95.7,
+  'CVS CORP TTL - RMA': 49.3, 'WALGREENS BOOTS ALLIANCE (WBA) CORP - RMA': 25.6,
+  'WAKEFERN CORP W/O PRICE RITE - RMA': 56.5, 'DEMOULAS - RMA': 99.7,
+  'NATURAL GROCERS BY VC - TOTAL US': 99.7, 'FRESH THYME MARKET - TOTAL US': 98.9,
+  'BIG Y - RMA': 97.7, 'THE FRESH MARKET - TOTAL US': 96.9,
+  'SCHNUCKS - TOTAL US': 92.5, 'HEINENS - TOTAL US': 100.0,
+  'HARMONS NEIGHBORHOOD GROCER - TOTAL US': 96.4, 'LUNDS & BYERLYS - TOTAL US': 100.0,
+  'DIERBERGS MARKETS - RMA': 100.0, 'NCG - TOTAL US X-PCC': 66.6,
+  'EARTH FARE MARKETS - TOTAL US': 100.0, 'FESTIVAL FOODS': 89.2,
+  'MARKET OF CHOICE - TOTAL US': 100.0, 'MOLLIE STONES - TOTAL US': 100.0,
+  'PLUM MARKET - TOTAL US': 100.0, 'NUGGET MARKET - TOTAL US': 82.2,
+  'FAREWAY STORES - TOTAL US': 75.8, 'MOMS ORGANIC MARKET - TOTAL US': 100.0,
+  'AC - ALBERTSONSCO HAGGENS DIV - RMA': 100.0, 'SOUTHEASTERN GROCERS CORP - RMA': 82.2,
+  'PCC - TOTAL US': 100.0
+};
+var SPINS_PBJ_ACV = {
+  'WALMART CORP - RMA': 85.7, 'TARGET CORP - RMA': 77.4,
+  'SPROUTS FARMERS MARKET - TOTAL US W/O PL': 99.5, 'PUBLIX CORP - RMA': 98.9,
+  'KROGER CORP W/ ROUNDYS - RMA': 86.2, 'KROGER KING SOOPERS - RMA': 100.0,
+  'HY-VEE CORP - RMA': 93.7, 'MEIJER CORP - RMA': 98.0,
+  'WEGMANS CORP W/O METRO NY - RMA': 100.0, 'KROGER HARRIS TEETER TTL - RMA': 85.4,
+  'AD - DELHAIZE FOOD LION CORP - RMA': 92.7, 'AD - DELHAIZE HANNAFORD CORP DC1 - RMA': 94.2,
+  'AD - AHOLD GIANT CARLISLE DIV - RMA': 96.7, 'CVS CORP TTL - RMA': 39.1,
+  'WALGREENS BOOTS ALLIANCE (WBA) CORP - RMA': 55.0, 'WAKEFERN CORP W/O PRICE RITE - RMA': 34.5,
+  'DEMOULAS - RMA': 99.6, 'NATURAL GROCERS BY VC - TOTAL US': 99.0,
+  'FRESH THYME MARKET - TOTAL US': 97.8, 'BIG Y - RMA': 83.0,
+  'THE FRESH MARKET - TOTAL US': 64.6, 'SCHNUCKS - TOTAL US': 93.0,
+  'HEINENS - TOTAL US': 95.6, 'HARMONS NEIGHBORHOOD GROCER - TOTAL US': 100.0,
+  'LUNDS & BYERLYS - TOTAL US': 96.3, 'DIERBERGS MARKETS - RMA': 96.5,
+  'NCG - TOTAL US X-PCC': 50.8, 'EARTH FARE MARKETS - TOTAL US': 100.0,
+  'FESTIVAL FOODS': 86.9, 'MARKET OF CHOICE - TOTAL US': 100.0,
+  'MOLLIE STONES - TOTAL US': 100.0, 'PLUM MARKET - TOTAL US': 100.0,
+  'NUGGET MARKET - TOTAL US': 49.2, 'FAREWAY STORES - TOTAL US': 5.8,
+  'MOMS ORGANIC MARKET - TOTAL US': 100.0, 'AC - ALBERTSONSCO HAGGENS DIV - RMA': 100.0,
+  'SOUTHEASTERN GROCERS CORP - RMA': 38.6, 'PCC - TOTAL US': 83.8
+};
+
+// RMA name \u2192 dashboard account name (for SPINS)
+var SPINS_ACCT_MAP = {
+  'WALMART CORP - RMA': 'Walmart',
+  'TARGET CORP - RMA': 'Target',
+  'SPROUTS FARMERS MARKET - TOTAL US W/O PL': 'Sprouts',
+  'PUBLIX CORP - RMA': 'Publix',
+  'KROGER CORP W/ ROUNDYS - RMA': 'Kroger GO',
+  'KROGER KING SOOPERS - RMA': 'King Soopers',
+  'HY-VEE CORP - RMA': 'HyVee',
+  'MEIJER CORP - RMA': 'Meijer',
+  'WEGMANS CORP W/O METRO NY - RMA': "Wegman's",
+  'KROGER HARRIS TEETER TTL - RMA': 'Harris Teeter',
+  'AD - DELHAIZE FOOD LION CORP - RMA': 'Delhaize Food Lion',
+  'AD - DELHAIZE HANNAFORD CORP DC1 - RMA': 'Delhaize Hannaford',
+  'AD - AHOLD STOP & SHOP DIV - RMA': 'Ahold Stop & Shop',
+  'AD - AHOLD GIANT CARLISLE DIV - RMA': 'Ahold GIANT Carl.',
+  'CVS CORP TTL - RMA': 'CVS',
+  'WALGREENS BOOTS ALLIANCE (WBA) CORP - RMA': 'Walgreens',
+  'WAKEFERN CORP W/O PRICE RITE - RMA': 'Wakefern',
+  'DEMOULAS - RMA': 'Market Basket',
+  'NATURAL GROCERS BY VC - TOTAL US': 'Natural Grocers',
+  'FRESH THYME MARKET - TOTAL US': 'Fresh Thyme Mkt',
+  'BIG Y - RMA': 'Big Y',
+  'THE FRESH MARKET - TOTAL US': 'The Fresh Market',
+  'SCHNUCKS - TOTAL US': 'Schnucks',
+  'HEINENS - TOTAL US': "Heinen's",
+  'HARMONS NEIGHBORHOOD GROCER - TOTAL US': "Harmon's",
+  'LUNDS & BYERLYS - TOTAL US': 'Lunds',
+  'DIERBERGS MARKETS - RMA': "Dierberg's",
+  'NCG - TOTAL US X-PCC': 'NCG',
+  'EARTH FARE MARKETS - TOTAL US': 'Earth Fare',
+  'FESTIVAL FOODS': 'Festival Foods',
+  'MARKET OF CHOICE - TOTAL US': 'Market of Choice',
+  'MOLLIE STONES - TOTAL US': "Mollie Stone's",
+  'PLUM MARKET - TOTAL US': 'Plum Market',
+  'NUGGET MARKET - TOTAL US': 'Nugget Market',
+  'FAREWAY STORES - TOTAL US': 'Fareway',
+  'MOMS ORGANIC MARKET - TOTAL US': "Mom's Organic",
+  'AC - ALBERTSONSCO HAGGENS DIV - RMA': 'Haggen',
+  'SOUTHEASTERN GROCERS CORP - RMA': 'Ingles',
+  'PCC - TOTAL US': 'PCC'
+};
+
+function applySPINSACV() {
+  DATA.forEach(function(a) {
+    for (var rma in SPINS_ACCT_MAP) {
+      if (SPINS_ACCT_MAP[rma] === a.name) {
+        if (SPINS_BITES_ACV[rma] != null && a.bACV == null) a.bACV = SPINS_BITES_ACV[rma];
+        if (SPINS_PBJ_ACV[rma]   != null && a.pACV == null) a.pACV = SPINS_PBJ_ACV[rma];
+        break;
+      }
+    }
+  });
+  AA = DATA.filter(function(a){return a.bACV!=null;})
+    .sort(function(a,b){return b.bACV-a.bACV;})
+    .slice(0,18)
+    .map(function(a){return {name:a.name,t:a.tier,v:a.bACV};});
+}
+
+async function fetchPhotos() {
+  var url = SP_SITE + '/_api/v2.1/drives/' + DRIVE_ID +
+    '/root:/' + PHOTOS_FOLDER_PATH + ':/children?$select=name,id,folder,lastModifiedDateTime,file';
+  var r = await fetch(url, { headers: { Accept: 'application/json' } });
+  if (!r.ok) throw new Error('Photos fetch failed: ' + r.status);
+  var d = await r.json();
+  return d.value || [];
+}
+
+function applyPhotos(items) {
+  var photoMap = {};
+  items.forEach(function(item) {
+    if (item.folder) {
+      photoMap[item.name] = { count: item.folder.childCount || 0, modified: item.lastModifiedDateTime, id: item.id };
+    }
+  });
+  DATA.forEach(function(a) {
+    if (photoMap[a.name] && photoMap[a.name].count > 0) a.photos = true;
+    a.status = ds(a.photos, a.newU, a.keheN);
+  });
+  PL = Object.keys(photoMap).map(function(name) {
+    var info = photoMap[name];
+    var acct = DATA.filter(function(a){return a.name===name;})[0];
+    var d = new Date(info.modified);
+    return { name: name, tier: acct ? acct.tier : '?', confirmed: info.count > 0, photoCount: info.count,
+      uploadedDate: d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+      spUrl: PB + encodeURIComponent(name), notes: '' };
+  });
+}
+async function initLiveData() {
+  showSkeleton();
+  dataWarn = [];
+  DATA = buildDATA(D_FALLBACK);
+  var results = await Promise.allSettled([
+    fetchFileAsCSV(RETAILER_SUMMARY_ITEM),
+    fetchFileContent(UNFI_SBO_ITEM),
+    fetchFileContent(KEHE_ITEM),
+    fetchPhotos()
+  ]);
+  var tierOk = false, unfiOk = false, keheOk = false, photosOk = false, resetOk = false;
+  if (results[0].status === 'fulfilled') {
+    try { parseTierSummary(results[0].value); DATA = buildDATA(D_FALLBACK); tierOk = true; }
+    catch(e) { console.warn('Tier parse error:', e); }
+  } else { dataWarn.push('Retailer summary unavailable'); }
+  if (results[1].status === 'fulfilled') {
+    try { var unfiResult = parseUNFISBO(results[1].value); applyUNFIData(unfiResult); window._unfiParsed = unfiResult; unfiOk = true; }
+    catch(e) { console.warn('UNFI parse error:', e); dataWarn.push('UNFI data error'); }
+  } else { dataWarn.push('UNFI data unavailable'); }
+  if (results[2].status === 'fulfilled') {
+    try { var keheResult = parseKeHE(results[2].value); applyKeHEData(keheResult); window._keheParsed = keheResult; keheOk = true; }
+    catch(e) { console.warn('KeHE parse error:', e); dataWarn.push('KeHE data error'); }
+  } else { dataWarn.push('KeHE data unavailable'); }
+  if (results[3].status === 'fulfilled') {
+    try { applyPhotos(results[3].value); photosOk = true; }
+    catch(e) { console.warn('Photos error:', e); dataWarn.push('Photos unavailable'); }
+  } else { dataWarn.push('Photos unavailable'); }
+  if (results[4] && results[4].status==='fulfilled') {
+    try { var rm=parseResetDates(results[4].value); if(Object.keys(rm).length>0){applyResetDates(rm);resetOk=true;} } catch(e){console.warn('Reset dates:',e);}
+  }
+  applySPINSACV();
+  var ts = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'});
+  if (dataWarn.length === 0) {
+    updateFreshBadge('Live &middot; UNFI WE 3/22 &middot; KeHE Apr 9 2026 &middot; SPINS WE 3/22 &middot; ' + ts, false);
+  } else if (unfiOk || keheOk) {
+    updateFreshBadge('Partial live data &middot; ' + ts + ' &mdash; ' + dataWarn.join(', '), true);
+  } else {
+    updateFreshBadge('Cached data WE 3/22/26 &mdash; live fetch failed', true);
+  }
+  rnav(); rfilters(); rc();
+}
+
+
+
+
+function ds(p,n,k){return p?"Complete":(n>0||k>0)?"Shipped":"Not Started";}
+var DATA=buildDATA(D_FALLBACK);
+var TR=[{w:"2/15",n:0,o:1238},{w:"2/22",n:0,o:1578},{w:"3/1",n:0,o:616},{w:"3/8",n:440,o:1280},{w:"3/15",n:977,o:1077},{w:"3/22",n:1459,o:1123}];
+var KR=[{w:"Jan",n:0,o:18420},{w:"Feb",n:0,o:19100},{w:"Mar W1",n:8210,o:17300},{w:"Mar W2",n:14620,o:15800},{w:"Mar W3",n:18972,o:14200},{w:"Mar W4",n:22134,o:13100}];
+var AB=3249.6,AP=1666.5;
+var AA=[{name:"Publix",t:"A",v:99.8},{name:"Market Basket",t:"A",v:99.7},{name:"Sprouts",t:"A",v:99.1},{name:"Natural Grocers",t:"B",v:98.7},{name:"Fresh Thyme Mkt",t:"B",v:98.7},{name:"Dierberg's",t:"B",v:98.5},{name:"King Soopers",t:"A",v:96.8},{name:"Harris Teeter",t:"A",v:88.7},{name:"Big Y",t:"B",v:96.7},{name:"Wegman's",t:"A",v:96.1},{name:"Heinen's",t:"B",v:95.6},{name:"The Fresh Market",t:"B",v:95.1},{name:"Harmon's",t:"B",v:93.9},{name:"Schnucks",t:"B",v:91.0},{name:"Festival Foods",t:"C",v:89.2},{name:"Lunds",t:"B",v:88.7},{name:"Ahold Stop & Shop",t:"A",v:96.4},{name:"Delhaize Hannaford",t:"A",v:94.3}];
+var PL=[{name:"Sprouts",tier:"A",confirmed:true,photoCount:2,uploadedDate:"Apr 1, 2026",spUrl:"https://bobosoatbars.sharepoint.com/sites/SyndicatedDataReports/Shared%20Documents/OATPOLLO/Dashboard/Photos/Sprouts",notes:"New 6pk Bites + 5pk PBJ confirmed on shelf"}];
+var PB="https://bobosoatbars.sharepoint.com/sites/SyndicatedDataReports/Shared%20Documents/OATPOLLO/Dashboard/Photos/";
+var tab="overview",tF="All",sF="All",sk="tier",sd=1;
+function xe(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function tb(t){return'<span class="t'+t.toLowerCase()+'">'+t+'</span>';}
+function sp(s){if(s==="Complete")return'<span class="sc">&#10003; Complete</span>';if(s==="Shipped")return'<span class="ss">&#8594; Shipped</span>';return'<span class="sn">&#9900; Not started</span>';}
+function bar2(v,max,col,lg){var w=max>0?Math.min(100,Math.round(v/max*100)):0;return'<div class="'+(lg?"bwl":"bw2")+'"><div class="bf" style="width:'+w+'%;background:'+col+'"></div></div>';}
+function sar(k){return sk===k?(sd===1?" &uarr;":" &darr;"):"";}
+function gf(){
+  var q=(document.getElementById("q")||{}).value||"";
+  var tO={A:0,B:1,C:2};
+  return DATA.filter(function(a){
+    if(tF!=="All"&&a.tier!==tF)return false;
+    if(sF!=="All"&&a.status!==sF)return false;
+    if(q&&a.name.toLowerCase().indexOf(q.toLowerCase())<0)return false;
+    return true;
+  }).sort(function(a,b){
+    if(sk==="tier")return sd*(tO[a.tier]-tO[b.tier]);
+    if(sk==="name")return sd*a.name.localeCompare(b.name);
+    if(sk==="oldU")return sd*(a.oldU-b.oldU);
+    if(sk==="newU")return sd*(a.newU-b.newU);
+    if(sk==="kehe")return sd*(a.keheN-b.keheN);
+    if(sk==="bACV")return sd*((a.bACV||0)-(b.bACV||0));
+    if(sk==="transDate")return sd*((a.transitionDate||'').localeCompare(b.transitionDate||''));
+    if(sk==="status")return sd*a.status.localeCompare(b.status);
+    return 0;
+  });
+}
+function rnav(){
+  var conf=DATA.filter(function(a){return a.photos;}).length;
+  var urg=DATA.filter(function(a){return a.status==="Not Started"&&a.tier==="A";}).length;
+  var navs=[{k:"overview",l:"Overview",ic:"&#9672;"},{k:"tracker",l:"Account tracker",ic:"&#8801;"},{k:"acv",l:"ACV swap",ic:"&#8597;"},{k:"urgency",l:"Urgency",ic:"&#9873;",b:urg},{k:"visual",l:"Visual log",ic:"&#9673;",b:conf,bc:"nbg-g"},{k:"pricing",l:"Pricing",ic:"&#36;"}];
+  document.getElementById("nav").innerHTML=navs.map(function(n){
+    return '<button class="np'+(tab===n.k?" on":"")+'" data-tab="'+n.k+'"><span style="font-size:11px">'+n.ic+'</span>'+xe(n.l)+(n.b>0?'<span class="nbg '+(n.bc||"")+'">'+n.b+'</span>':'')+'</button>';
+  }).join("");
+}
+function rfilters(){
+  document.getElementById("tf").innerHTML=["All","A","B","C"].map(function(v){
+    return '<button class="chip'+(tF===v?" ob":"")+'" data-tier="'+v+'">'+(v==="All"?"All":"Tier "+v)+'</button>';
+  }).join(" ");
+  document.getElementById("sf").innerHTML=[["All","&#10003; Complete","og","Complete"],["All","&#8594; Shipped","ob","Shipped"],["All","&#9900; Not started","od","Not Started"],["All","All","od","All"]].map(function(s,i){
+    var vals=["All","Complete","Shipped","Not Started"][i];
+    var labels=["All","&#10003; Complete","&#8594; Shipped","&#9900; Not started"][i];
+    var cls=["od","og","ob","od"][i];
+    return '<button class="chip'+(sF===vals?" "+cls:"")+'" data-stat="'+vals+'">'+labels+'</button>';
+  }).join(" ");
+}
+function setTab(k){tab=k;rnav();rc();}
+function setT(v){tF=v;rfilters();go();}
+function setSt(v){sF=v;rfilters();go();}
+function go(){rc();}
+function ds2(k){if(sk===k){sd*=-1;}else{sk=k;sd=1;}rc();}
+function rc(){
+  var f=gf();
+  document.getElementById("cnt").textContent=f.length+" accts";
+  var el=document.getElementById("content");
+  if(tab==="overview")el.innerHTML=rov(f);
+  else if(tab==="tracker")el.innerHTML=rtr(f);
+  else if(tab==="acv")el.innerHTML=racv(f);
+  else if(tab==="urgency")el.innerHTML=rurg(f);
+  else if(tab==="visual")el.innerHTML=rvis(f);
+  else if(tab==="pricing")el.innerHTML=rprice();
+}
+
+function nearestDeadline() {
+  var notStartedA = DATA.filter(function(a){return a.status==='Not Started'&&a.tier==='A'&&a.transitionDate;});
+  if (!notStartedA.length) return 'all actioned';
+  var dates = notStartedA.map(function(a){return a.transitionDate;}).sort();
+  var next = dates[0];
+  var d = new Date(next+'T00:00:00');
+  var now = new Date(); now.setHours(0,0,0,0);
+  var diff = Math.round((d-now)/(1000*60*60*24));
+  var label = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  if (diff < 0)  return label+' past';
+  if (diff === 0) return 'due today';
+  return 'next: '+label+' ('+diff+'d)';
+}
+
+function rov(f){
+  var comp=f.filter(function(a){return a.status==="Complete";}).length;
+  var ship=f.filter(function(a){return a.status==="Shipped";}).length;
+  var nst=f.filter(function(a){return a.status==="Not Started";}).length;
+  var urgA=DATA.filter(function(a){return a.status==="Not Started"&&a.tier==="A";}).length;
+  var un=f.reduce(function(s,a){return s+a.newU;},0);
+  var mx=0;TR.forEach(function(d){mx=Math.max(mx,d.n,d.o);});mx=mx||1;
+  var bars=TR.map(function(d){var nh=Math.round(d.n/mx*84),oh=Math.round(d.o/mx*84);return'<div class="bgrp"><div class="bbar" style="height:'+nh+'px;background:#639922"></div><div class="bbar" style="height:'+oh+'px;background:#F0997B"></div></div>';}).join("");
+  var bxl=TR.map(function(d){return'<div class="bxlb">'+d.w+'</div>';}).join("");
+  var kmx=0;KR.forEach(function(d){kmx=Math.max(kmx,d.n,d.o);});kmx=kmx||1;
+  var kbars=KR.map(function(d){var nh=Math.round(d.n/kmx*84),oh=Math.round(d.o/kmx*84);return'<div class="bgrp"><div class="bbar" style="height:'+nh+'px;background:#185FA5"></div><div class="bbar" style="height:'+oh+'px;background:#F0997B"></div></div>';}).join("");
+  var kbxl=KR.map(function(d){return'<div class="bxlb">'+d.w+'</div>';}).join("");
+  var klast=KR[KR.length-1];var kpct=klast.n>0?Math.round(klast.n/(klast.n+klast.o)*100):0;
+  var trows=["A","B","C"].map(function(t){
+    var ta=f.filter(function(a){return a.tier===t;});
+    var tc=ta.filter(function(a){return a.status==="Complete";}).length,ts=ta.filter(function(a){return a.status==="Shipped";}).length,tn=ta.filter(function(a){return a.status==="Not Started";}).length;
+    return'<div class="trow"><div class="thd"><div class="fr">'+tb(t)+'<span style="color:#666;font-size:12px">'+ta.length+' accounts</span></div><div style="display:flex;gap:10px;font-size:11px"><span style="color:#639922;font-weight:600">&#10003; '+tc+'</span><span style="color:#185FA5;font-weight:600">&#8594; '+ts+'</span><span style="color:#888">&#9900; '+tn+'</span></div></div><div class="tbar">'+(tc>0?'<div style="flex:'+tc+';background:#639922"></div>':'')+(ts>0?'<div style="flex:'+ts+';background:#185FA5"></div>':'')+(tn>0?'<div style="flex:'+tn+';background:#e5e5e5"></div>':'')+'</div></div>';
+  }).join("");
+  var topO=[].concat(DATA).sort(function(a,b){return b.oldU-a.oldU;}).slice(0,5).map(function(a){return'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12px"><div class="fr">'+tb(a.tier)+'<span>'+xe(a.name)+'</span></div><span class="mono" style="color:#BA7517">'+a.oldU.toLocaleString()+' u</span></div>';}).join("");
+  var kn=DATA.filter(function(a){return a.keheN>0;}).sort(function(a,b){return b.keheN-a.keheN;}).map(function(a){return'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#EAF3DE;border:1.5px solid rgba(99,153,34,.2);border-radius:8px;margin-bottom:7px"><div class="fr">'+tb(a.tier)+'<span style="font-size:12px;font-weight:500">'+xe(a.name)+'</span></div><div style="text-align:right"><span class="mono" style="color:#639922">'+a.keheN.toLocaleString()+'</span><div style="font-size:10px;color:#666">units &middot; '+a.keheS+' stores</div></div></div>';}).join("");
+  var oo=["CVS","Publix","King Soopers","Meijer","Winco","Jewel","Shaw's","Schnucks","Amazon Fresh","Mom's Organic"].map(function(n){return'<span class="pa" style="margin:2px">'+xe(n)+'</span>';}).join(" ");
+  return'<div class="col">'+
+    '<div class="g4 mb8"><div class="met mg"><div class="ml2">Complete</div><div class="mv" style="color:#639922">'+comp+'</div><div class="ms">of '+f.length+' accounts</div></div><div class="met mb2"><div class="ml2">Shipped to retail</div><div class="mv" style="color:#185FA5">'+ship+'</div><div class="ms">UNFI new items + KeHE 7.8/10.5oz</div></div><div class="met ma"><div class="ml2">Not started</div><div class="mv" style="color:#BA7517">'+nst+'</div><div class="ms">'+urgA+' A-tier \'+( nearestDeadline ? (\'&middot; \'+nearestDeadline()) : \'\' )+\'</div></div><div class="met mg"><div class="ml2">UNFI new cases WE 3/22</div><div class="mv" style="color:#639922">'+un.toLocaleString()+'</div><div class="ms">56.5% of UNFI weekly volume</div></div></div>'+
+    '<div class="g2">'+
+      '<div class="card cb2"><div class="sl">New vs old pack &mdash; UNFI weekly cases</div><div class="bchart2"><div class="bleg mb8"><span style="display:flex;align-items:center;gap:5px;font-size:12px;color:#666"><span class="bsw" style="background:#639922"></span>New Oatpollo (6pk/5pk)</span><span style="display:flex;align-items:center;gap:5px;font-size:12px;color:#666"><span class="bsw" style="background:#F0997B"></span>Old pack (5pk/4pk)</span></div><div class="bbars">'+bars+'</div><div class="bxl">'+bxl+'</div></div><div class="ib ig mt10">First new-item movement <strong>WE 3/8/26</strong>. By 3/22: <strong>1,459 new</strong> vs 1,123 old &mdash; new pack is <strong>56.5%</strong> of UNFI volume.</div></div>'+
+      '<div class="card"><div class="sl">Status by tier</div>'+trows+'<div style="border-top:1px solid #f0f0ee;padding-top:10px;margin-top:4px"><div class="sl">Top old-pack volume</div>'+topO+'</div></div>'+
+    '</div>'+
+    '<div class="card cg"><div class="sl">KeHE new Oatpollo items &mdash; 7.8oz Bites + 10.5oz PBJ (Mar 2026)</div><div class="g2"><div><div style="font-size:11px;font-weight:600;color:#639922;margin-bottom:8px">Confirmed new items shipping</div>'+kn+'</div><div><div style="font-size:11px;font-weight:600;color:#BA7517;margin-bottom:8px">Old pack only &mdash; not yet ordered</div><div style="margin-bottom:10px">'+oo+'</div><div class="ib igr">These accounts order old-pack through KeHE but have not placed new 7.8oz/10.5oz orders yet.</div></div></div></div>'+
+  '</div>';
+}
+function rtr(f){
+  var hh=[["tier","Tier"],["name","Account"],["","Ch"],["","Rep"],["status","Status"],["transDate","Deadline"],["oldU","Old units UNFI"],["newU","New items UNFI"],["kehe","KeHE new 7.8/10.5"],["bACV","Bites old ACV%"],["","Bites new ACV%"],["pACV","PBJ old ACV%"],["","PBJ new ACV%"]];
+  var ths=hh.map(function(h){return'<th><button class="thb'+(sk===h[0]&&h[0]?" on":"")+'"'+(h[0]?' data-sort="'+h[0]+'"':'')+'>'+xe(h[1])+sar(h[0])+'</button></th>';}).join("");
+  var rows=f.map(function(a){
+    return'<tr>'+
+      '<td>'+tb(a.tier)+'</td>'+
+      '<td><div style="font-weight:600;font-size:13px">'+xe(a.name)+'</div><div style="font-size:11px;color:#666">'+xe(a.dist||"")+'</div></td>'+
+      '<td style="color:#666;font-size:12px">'+xe(a.ch)+'</td>'+
+      '<td style="color:#666;font-size:12px">'+xe(a.rep)+'</td>'+
+      '<td>'+sp(a.status)+'</td>'+'<td>'+fmtDeadline(a.transitionDate,a.status)+'</td>'+
+      '<td style="text-align:right">'+(a.oldU>0?'<span class="mono" style="color:#BA7517">'+a.oldU.toLocaleString()+'</span>':'<span style="color:#ccc">&#8212;</span>')+'</td>'+
+      '<td style="text-align:right">'+(a.newU>0?'<span class="pg2 mono">'+a.newU.toLocaleString()+'</span>':'<span style="color:#ccc">&#8212;</span>')+'</td>'+
+      '<td style="text-align:right">'+(a.keheN>0?'<span class="pb2 mono">'+a.keheN.toLocaleString()+'</span>':'<span style="color:#ccc">&#8212;</span>')+'</td>'+
+      '<td style="text-align:right">'+(a.bACV?'<span class="mono" style="color:#0F6E56">'+a.bACV+'%</span>':'<span style="color:#ccc">&#8212;</span>')+'</td>'+
+      '<td style="text-align:right"><span class="mono" style="color:#639922;font-style:italic">&#8212;</span></td>'+
+      '<td style="text-align:right">'+(a.pACV?'<span class="mono" style="color:#534AB7">'+a.pACV+'%</span>':'<span style="color:#ccc">&#8212;</span>')+'</td>'+
+      '<td style="text-align:right"><span class="mono" style="color:#639922;font-style:italic">&#8212;</span></td>'+
+    '</tr>';
+  }).join("");
+  return'<div class="tw2"><table><thead><tr>'+ths+'</tr></thead><tbody>'+rows+'</tbody></table><div class="tf2">'+f.length+' accounts &middot; UNFI new = 231-D/232-D series &middot; KeHE = 7.8oz Bites + 10.5oz PBJ &middot; New ACV% populates when new SPINS file is uploaded</div></div>';
+}
+function racv(f){
+  var sw=[["Bites (5pk&rarr;6pk)",AB,"#A32D2D"],["PBJ (4pk&rarr;5pk)",AP,"#534AB7"]].map(function(s){
+    return'<div><div style="font-size:13px;font-weight:600;margin-bottom:10px">'+s[0]+'</div>'+
+      '<div class="mb8"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:#666">Old pack (baseline)</span><span class="mono" style="color:'+s[2]+'">'+s[1].toLocaleString()+' pts</span></div>'+bar2(s[1],s[1],s[2],true)+'</div>'+
+      '<div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:#666">New pack (current)</span><span style="font-size:11px;color:#639922;font-style:italic;font-weight:500">0 &mdash; upload SPINS</span></div>'+bar2(0,s[1],"#639922",true)+'</div>'+
+      '<div style="display:flex;justify-content:space-between;margin-top:6px;padding:5px 8px;background:#FAEEDA;border-radius:8px;font-size:11px"><span style="color:#666">Gap</span><span class="mono" style="color:#BA7517">&minus;'+s[1].toLocaleString()+' pts</span></div>'+
+    '</div>';
+  }).join("");
+  var ar2=AA.map(function(a){return'<div class="ar"><div style="display:flex;align-items:center;gap:5px;min-width:0">'+tb(a.t)+'<span style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+xe(a.name)+'</span></div>'+bar2(a.v,100,"#A32D2D",false)+'<span class="mono" style="text-align:right;color:#A32D2D">'+a.v+'%</span><span style="text-align:right;font-size:11px;font-style:italic;color:#999">&#8212;</span><span style="text-align:right;font-size:11px;font-style:italic;color:#BA7517">pending</span></div>';}).join("");
+  return'<div class="col">'+
+    '<div class="g3"><div class="met mr"><div class="ml2">Bites old ACV total</div><div class="mv" style="color:#A32D2D">'+AB.toLocaleString()+'</div><div class="ms">Sum Max% &middot; 40 accts &middot; SPINS WE 3/22/26</div></div><div class="met mp"><div class="ml2">PBJ old ACV total</div><div class="mv" style="color:#534AB7">'+AP.toLocaleString()+'</div><div class="ms">Sum Max% &middot; 20 accts &middot; SPINS WE 3/22/26</div></div><div class="met mg"><div class="ml2">New pack ACV</div><div class="mv" style="color:#639922;font-style:italic">Pending</div><div class="ms">Upload new SPINS file to populate</div></div></div>'+
+    '<div class="card cb2"><div class="sl">ACV swap progress</div><div class="g2 mb8">'+sw+'</div></div>'+
+    '<div class="card"><div class="sl">Per-account Bites ACV% &mdash; SPINS WE 3/22/26</div><div class="ar" style="padding-bottom:7px;margin-bottom:7px;border-bottom:1.5px solid #e5e5e5"><span class="ah">Account</span><span></span><span class="ah" style="text-align:right">Old%</span><span class="ah" style="text-align:right">New%</span><span class="ah" style="text-align:right">Gap</span></div>'+ar2+'</div>'+
+  '</div>';
+}
+
+function fmtDeadline(isoDate,status) {
+  if (!isoDate) return '<span style="color:#ccc">&#8212;</span>';
+  var d = new Date(isoDate + 'T00:00:00');
+  var now = new Date(); now.setHours(0,0,0,0);
+  var diff = Math.round((d - now) / (1000*60*60*24));
+  var label = d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+  var col, bg, txt, badge='';
+  var ns = !status || status==='Not Started';
+  if (diff < 0) { col='#791F1F'; bg='#FCEBEB'; txt=label+' ('+Math.abs(diff)+'d past)'; if(ns) badge=' <span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#A32D2D;color:#fff;font-weight:700">OVERDUE</span>'; }
+  else if (diff<=14&&ns) { col='#791F1F'; bg='#FCEBEB'; txt=label+' ('+diff+'d)'; badge=' <span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#A32D2D;color:#fff;font-weight:700">CRITICAL</span>'; }
+  else if (diff<=14) { col='#633806'; bg='#FAEEDA'; txt=label+' ('+diff+'d)'; }
+  else if (diff<=21) { col='#633806'; bg='#FAEEDA'; txt=label+' ('+diff+'d)'; }
+  else { col='#27500A'; bg='#EAF3DE'; txt=label+' ('+diff+'d)'; }
+  return '<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:'+bg+';color:'+col+';font-weight:600;white-space:nowrap">'+txt+'</span>'+badge;
+}
+
+function rurg(f){
+  var uA=DATA.filter(function(a){return a.status==="Not Started"&&a.tier==="A";}).sort(function(a,b){return Math.max(b.bACV||0,b.pACV||0)-Math.max(a.bACV||0,a.pACV||0);});
+  var sL=DATA.filter(function(a){return a.status==="Shipped";}).sort(function(a,b){return(b.newU||b.keheN)-(a.newU||a.keheN);});
+  var ur=uA.map(function(a){
+    var mx=Math.max(a.bACV||0,a.pACV||0),hi=mx>=80;
+    var bp=a.bACV?'<span style="font-family:monospace;font-size:12px;padding:3px 9px;border-radius:99px;background:'+(a.bACV>=80?"#FCEBEB":"#E1F5EE")+ ';color:'+(a.bACV>=80?"#791F1F":"#0F6E56")+'">'+a.bACV+'%</span>':'<span style="color:#ccc">&#8212;</span>';
+    var pp=a.pACV?'<span style="font-family:monospace;font-size:12px;padding:3px 9px;border-radius:99px;background:'+(a.pACV>=80?"#FCEBEB":"#EEEDFE")+';color:'+(a.pACV>=80?"#791F1F":"#534AB7")+'">'+a.pACV+'%</span>':'<span style="color:#ccc">&#8212;</span>';
+    return'<tr'+(hi?' class="hrr"':'')+'>'+
+      '<td><div class="fr"><span style="font-weight:600;font-size:13px'+(hi?";color:#A32D2D":"")+'">'+(xe(a.name))+'</span>'+(hi?'<span class="pr" style="font-size:10px">&#9888; high risk</span>':'')+'</div></td>'+
+      '<td style="color:#666;font-size:12px">'+xe(a.rep)+'</td>'+
+      '<td style="text-align:right">'+bp+'</td><td style="text-align:right">'+pp+'</td>'+
+      '<td>'+fmtDeadline(a.transitionDate,a.status)+'</td>'+'<td style="font-size:11px;color:#666">'+(hi?"Immediate outreach &mdash; high distro at risk":"Confirm new item authorization")+'</td>'+
+    '</tr>';
+  }).join("");
+  var sc=sL.map(function(a){var vol=a.newU>0?a.newU:a.keheN;var src=a.newU>0?"UNFI new items":"KeHE 7.8/10.5oz";var ac=a.newU>0?"#639922":"#185FA5";var bg=a.newU>0?"#EAF3DE":"#E6F1FB";return'<div class="si3" style="background:'+bg+';border-color:'+ac+'40">'+tb(a.tier)+'<div><div style="font-size:13px;font-weight:600">'+xe(a.name)+'</div><div style="display:flex;align-items:center;gap:4px;margin-top:2px"><span class="mono" style="color:'+ac+';font-size:11px">'+vol.toLocaleString()+'</span><span style="font-size:10px;color:#666">units &middot; '+src+'</span></div></div></div>';}).join("");
+  return'<div class="col">'+
+    '<div class="card ca"><div class="fr mb8"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#BA7517;color:#fff;font-size:12px;font-weight:700">!</span><span style="font-size:12px;font-weight:700;color:#BA7517;letter-spacing:.04em;text-transform:uppercase">A tier &mdash; not started ('+uA.length+' accounts)</span></div><div style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.5">No UNFI new-item SBO movement and no KeHE 7.8oz/10.5oz orders. Sorted by ACV risk. <strong style="color:#A32D2D">CRITICAL</strong> = deadline &lt;2 weeks, no shipments.</div><div class="tw2"><table><thead><tr style="background:#f7f7f6;border-bottom:1.5px solid #e5e5e5">'+["Account","Rep","Bites ACV","PBJ ACV","Deadline","Action"].map(function(h){return'<th><button class="thb">'+h+'</button></th>';}).join("")+'</tr></thead><tbody>'+ur+'</tbody></table></div></div>'+
+    '<div class="card cb2"><div class="fr mb8"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#185FA5;color:#fff;font-size:12px;font-weight:700">&#8594;</span><span style="font-size:12px;font-weight:700;color:#185FA5;letter-spacing:.04em;text-transform:uppercase">Shipped to retail &mdash; awaiting visual ('+sL.length+')</span></div><div style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.5">Shipment confirmed. Upload shelf photo to <code>Photos/[AccountName]/</code> in SharePoint to mark Complete.</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+sc+'</div></div>'+
+  '</div>';
+}
+function rvis(f){
+  var conf=PL.filter(function(p){return p.confirmed;});
+  var cc=conf.length===0?'<div style="font-size:12px;color:#666;text-align:center;padding:24px 0">No photos confirmed yet. Upload shelf photos to Photos/[AccountName]/ to populate this section.</div>':conf.map(function(p){return'<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#EAF3DE;border:1.5px solid rgba(99,153,34,.2);border-radius:8px;margin-bottom:8px"><div class="fr">'+tb(p.tier)+'<div><div style="font-size:13px;font-weight:600">'+xe(p.name)+'</div><div style="font-size:11px;color:#3B6D11;margin-top:2px">&#128248; '+p.photoCount+' photo'+(p.photoCount!==1?'s':'')+' &middot; Uploaded '+xe(p.uploadedDate)+'</div>'+(p.notes?'<div style="font-size:11px;color:#666;margin-top:1px">'+xe(p.notes)+'</div>':'')+'</div></div><a href="'+xe(p.spUrl)+'" target="_blank" class="lbtn">&#8599; View photos</a></div>';}).join("");
+  var steps=[["1","Take shelf photo","New pack clearly visible. Include store number if possible."],["2","Create account folder","SharePoint &rarr; OATPOLLO &rarr; Dashboard &rarr; Photos &rarr; New folder named exactly as the account"],["3","Upload photo","Drop JPEG or PNG into the folder."],["4","Status updates on sync","Dashboard marks all SKU rows Complete for that account."]].map(function(s){return'<div class="step"><span class="sn2">'+s[0]+'</span><div><div class="stl">'+s[1]+'</div><div class="sdsc">'+s[2]+'</div></div></div>';}).join("");
+  var sorted=[].concat(DATA).sort(function(a,b){if(a.photos&&!b.photos)return -1;if(!a.photos&&b.photos)return 1;var tO={A:0,B:1,C:2};return(tO[a.tier]||0)-(tO[b.tier]||0);});
+  var ac=sorted.map(function(a){var pe=PL.filter(function(p){return p.name===a.name;})[0];var ok=a.photos;return'<div class="vc'+(ok?" ok":"")+'">'+tb(a.tier)+'<div style="min-width:0;flex:1"><div class="an">'+xe(a.name)+'</div>'+(ok?'<div style="font-size:10px;color:#3B6D11;margin-top:1px">&#10003; '+(pe?pe.photoCount+' photo'+(pe.photoCount!==1?'s':''):'Confirmed')+'</div>':'<div class="asub">Photos/'+xe(a.name)+'/</div>')+'</div>'+(ok?'<a href="'+PB+encodeURIComponent(a.name)+'" target="_blank" style="font-size:11px;color:#185FA5;flex-shrink:0">&#8599;</a>':'')+'</div>';}).join("");
+  return'<div class="col"><div class="g2"><div class="card cb2"><div class="sl">How to confirm a visual</div>'+steps+'</div><div class="card cg"><div class="sl">&#10003; Visually confirmed &mdash; '+conf.length+' account'+(conf.length!==1?'s':'')+'</div>'+cc+'<div class="mt10"><a href="'+PB+'" target="_blank" class="lbtn">&#8599; Open SharePoint Photos folder</a></div></div></div><div class="card"><div class="sl">All accounts &mdash; visual status</div><div class="ga">'+ac+'</div></div></div>';
+}
+
+function rprice(){
+  // Per-piece cost helper
+  function pp(srp,ct){return ct>0?(srp/ct):null;}
+  function fmt(v){return v!=null?'$'+v.toFixed(2):'-';}
+  function fmtDiff(v){if(v==null)return '-';var s=v>=0?'+':'-';return s+'$'+Math.abs(v).toFixed(2);}
+  function pctDiff(nv,ov){if(!nv||!ov)return null;return Math.round((nv-ov)/ov*100);}
+  function badge(pct){
+    if(pct==null)return '';
+    if(pct<=0)return '<span style="color:#27500A;font-weight:600">&#9660; '+Math.abs(pct)+'%</span>';
+    if(pct<=5)return '<span style="color:#633806;font-weight:600">&#9654; +'+pct+'%</span>';
+    return '<span style="color:#791F1F;font-weight:600">&#9650; +'+pct+'%</span>';
+  }
+  // Build rows for all accounts that have SRP data
+  var rows=DATA.map(function(a){
+    var d=SRP_DATA[a.name];
+    if(!d)return null;
+    var bPPold=pp(d.b5,5),bPPnew=pp(d.b6,6);
+    var pPPold=pp(d.p4,4),pPPnew=pp(d.p5,5);
+    var bPct=pctDiff(bPPnew,bPPold),pPct=pctDiff(pPPnew,pPPold);
+    var photoNote=a.photos?'<span class="pg2" style="font-size:9px;padding:1px 5px">&#128248; photo confirmed</span>':'';
+    return '<tr>'+
+      '<td>'+tb(a.tier)+'<span style="font-size:12px;font-weight:600">'+xe(a.name)+'</span> '+photoNote+'</td>'+
+      '<td style="text-align:right;font-family:monospace">'+fmt(d.b5)+'</td>'+
+      '<td style="text-align:right;font-family:monospace">'+fmt(d.b6)+'</td>'+
+      '<td style="text-align:right;font-family:monospace;color:#666">'+fmt(bPPold)+'</td>'+
+      '<td style="text-align:right;font-family:monospace;color:#185FA5">'+fmt(bPPnew)+'</td>'+
+      '<td style="text-align:center">'+badge(bPct)+'</td>'+
+      '<td style="text-align:right;font-family:monospace">'+fmt(d.p4)+'</td>'+
+      '<td style="text-align:right;font-family:monospace">'+fmt(d.p5)+'</td>'+
+      '<td style="text-align:right;font-family:monospace;color:#666">'+fmt(pPPold)+'</td>'+
+      '<td style="text-align:right;font-family:monospace;color:#185FA5">'+fmt(pPPnew)+'</td>'+
+      '<td style="text-align:center">'+badge(pPct)+'</td>'+
+    '</tr>';
+  }).filter(Boolean).join('');
+  // Summary metrics
+  var srpAccts=Object.keys(SRP_DATA).length;
+  var bDownCount=DATA.filter(function(a){var d=SRP_DATA[a.name];if(!d)return false;return pp(d.b6,6)<pp(d.b5,5);}).length;
+  var pDownCount=DATA.filter(function(a){var d=SRP_DATA[a.name];if(!d)return false;return pp(d.p5,5)<pp(d.p4,4);}).length;
+  var photoNote='<div class="ib iblu" style="margin-bottom:12px"><strong>&#128248; Shelf photo pricing:</strong> When new-item SPINS data is delayed, SRPs can be verified from shelf photos. Upload photos to the Photos/ folder \u2014 dashboard will flag accounts where photo is confirmed so you can cross-check the shelf price vs. plan.</div>';
+  var hdr=['Account','Bites Old 5pk SRP','Bites New 6pk SRP','Per-piece old','Per-piece new','Change','PBJ Old 4pk SRP','PBJ New 5pk SRP','Per-piece old','Per-piece new','Change'];
+  return '<div class="col">'+
+    '<div class="g3">'+
+    '<div class="met mb2"><div class="ml2">Accounts with SRP data</div><div class="mv" style="color:#185FA5">'+srpAccts+'</div><div class="ms">From Copy of SRP Oatpollo.xlsx &middot; Feb 2026 plan</div></div>'+
+    '<div class="met mg"><div class="ml2">Bites per-piece &#9660;</div><div class="mv" style="color:#639922">'+bDownCount+'</div><div class="ms">Accounts where new 6pk per-piece &lt; old 5pk per-piece</div></div>'+
+    '<div class="met mg"><div class="ml2">PBJ per-piece &#9660;</div><div class="mv" style="color:#639922">'+pDownCount+'</div><div class="ms">Accounts where new 5pk per-piece &lt; old 4pk per-piece</div></div>'+
+    '</div>'+
+    photoNote+
+    '<div class="tw2"><table><thead><tr>'+hdr.map(function(h){return'<th><button class="thb">'+h+'</button></th>';}).join('')+'</tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div class="tf2">SRP plan from Copy of SRP Oatpollo.xlsx (Feb 2026). Per-piece = SRP &divide; count. &#9660; = per-piece cost decreases for consumer. &#9650; = per-piece cost increases. Source: MarketingSP.</div>'+
+    '</div>'+
+    '<div class="card" style="margin-top:8px"><div class="sl">Per-piece price context</div>'+
+    '<div class="g2">'+
+    '<div><div class="sl" style="margin-bottom:8px">Bites: 5pk &rarr; 6pk</div><div style="font-size:12px;color:#666;line-height:1.8">Old 5pk per-piece = SRP&divide;5.<br>New 6pk per-piece = SRP&divide;6.<br>If new SRP &le; old SRP &times; 1.2 (20% premium), consumer gets more value per piece.<br><strong>Typical result: &darr;5-15% per-piece cost</strong> &mdash; strong value story.</div></div>'+
+    '<div><div class="sl" style="margin-bottom:8px">PBJ: 4pk &rarr; 5pk</div><div style="font-size:12px;color:#666;line-height:1.8">Old 4pk per-piece = SRP&divide;4.<br>New 5pk per-piece = SRP&divide;5.<br>If new SRP &le; old SRP &times; 1.25 (25% premium), consumer gets more value per piece.<br><strong>Typical result: &darr;6-12% per-piece cost</strong> &mdash; strong value story.</div></div>'+
+    '</div></div>'+
+  '</div>';
+}
+// Init \u2014 start with fallback data, then fetch live
+DATA=buildDATA(D_FALLBACK);
+rnav();rfilters();
+initLiveData();
+
+// Delegated click handler \u2014 avoids all onclick quoting issues
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('[data-tab],[data-tier],[data-stat],[data-sort]');
+  if (!el) return;
+  var t = el.getAttribute('data-tab');
+  var ti = el.getAttribute('data-tier');
+  var st = el.getAttribute('data-stat');
+  var so = el.getAttribute('data-sort');
+  if (t)  { tab=t; rnav(); rc(); }
+  if (ti) { tF=ti; rfilters(); go(); }
+  if (st) { sF=st; rfilters(); go(); }
+  if (so) { if(sk===so){sd*=-1;}else{sk=so;sd=1;} rc(); }
+});
+</script></body></html>
